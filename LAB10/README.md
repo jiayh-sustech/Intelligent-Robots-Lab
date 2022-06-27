@@ -1,3 +1,3 @@
-# Intelligent-Robots-Lab2
+# Intelligent-Robots-Lab10
 
-Lab2 materials for the intelligent robotics course
+Lab10 materials for the intelligent robotics course
