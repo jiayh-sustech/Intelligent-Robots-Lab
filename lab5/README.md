@@ -207,7 +207,7 @@ $check_urdf smartcar.urdf
 
 ```
 $cd ~/smartcar_ws/src/smartcar_description/urdf
-$urdf_to_graphiz mcar.urdf
+$urdf_to_graphiz smartcar.urdf
 ```
 
 <img src="images/check_urdf_2.png" alt="check_urdf_2" style="zoom:50%;" />
@@ -253,7 +253,7 @@ If the following error occurs:
 Install this package:
 
 ```
-$sudo apt-get install ros-melodic-joint-state-publisher-gui
+$sudo apt-get install ros-noetic-joint-state-publisher-gui
 ```
 
 Demo:
