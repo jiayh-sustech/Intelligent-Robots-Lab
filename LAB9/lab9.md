@@ -465,7 +465,7 @@ https://github.com/ros-planning/navigation.git
 #### 1、MCL
 Monte-Carlo Localization is a kind of particle filter used to generate particles to approximate the real location probabilit。
 
-![MCL](image/MCL)
+![MCL](image/MCL.png)
 
 Pseudocode
 
