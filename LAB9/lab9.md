@@ -586,7 +586,7 @@ AMCL中的一些重要参数
 
 `cd launch`
 
-`touch amcl.launc`
+`touch amcl.launch`
 
 Code
 
