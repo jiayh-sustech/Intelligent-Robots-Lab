@@ -72,12 +72,12 @@ You can create a launch file with the following code and run it in your world wi
 
 #### 2、Topics and services of hector
 
-![Topics and services of hector](image/Topics and services of hector.png)
+![Topics_and_services_of_hector](image/Topics_and_services_of_hector.png)
 
 
 #### 3、Tf transform of hector
 
-![tf transform of hector](image/tf transform of hector.png)
+![tf_transform_of_hector](image/tf_transform_of_hector.png)
 
 #### 4、Install hector_slam
 
