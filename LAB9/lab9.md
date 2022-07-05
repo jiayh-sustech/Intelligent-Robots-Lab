@@ -440,3 +440,331 @@ You can create a launch file with the following code and run it in your world wi
 ![cartographer_result](image/cartographer_result.png)
 
 ## Localization
+
+### Introduction
+智能机器人五点关键技术
+1、全局地图
+2、自身定位
+3、路径规划
+4、运动控制
+5、环境感
+机器人导航实现与无人驾驶类似，关键技术也是由上述五点组成，只是无人驾驶是基于室外的，而我们当前介绍的机器人导航更多是基于室内的。
+
+所谓定位就是推算机器人自身在全局地图中的位置，当然，SLAM中也包含定位算法实现，不过SLAM的定位是用于构建全局地图的，是属于导航开始之前的阶段，而当前定位是用于导航中，导航中，机器人需要按照设定的路线运动，通过定位可以判断机器人的实际轨迹是否符合预期。在ROS的导航功能包集navigation中提供了 amcl 功能包，用于实现导航中的机器人定位。
+
+![Introduction_of_Localization](image/Introduction_of_Localization)
+
+相关链接
+
+http://wiki.ros.org/amcl
+
+https://github.com/ros-planning/navigation.git
+
+### MCL
+
+#### 1、MCL
+Monte-Carlo Localization is a kind of particle filter used to generate particles to approximate the real location probabilit。
+
+![MCL](image/MCL)
+
+Pseudocode
+
+![MCL_Pcode](image/MCL_Pcode)
+
+问题：器人突然被抱走，放到了另外一个地方，多少粒子合适？
+
+#### 2、AMCL
+
+解决了机器人绑架问题，AMCL会在发现粒子们的平均分数突然降低了（意味着正确的粒子在某次迭代中被抛弃了）的时候，在全局再重新的撒一些粒子
+
+解决了粒子数固定的问题，因为有时候当机器人定位差不多得到了的时候，比如这些粒子都集中在一块了，还要维持这么多的粒子没必要，这个时候粒子数可以少一点了
+
+Pseudocode
+
+![AMCL_Pcode](image/AMCL_Pcode)
+
+#### 3、KLD MCL
+
+为了控制上述粒子数冗余而设计的。比如在栅格地图中,看粒子占了多少栅格。占得多，说明粒子很分散，在每次迭代重采样的时候，允许粒子数量的上限高一些。占得少，说明粒子都已经集中了，那就将上限设低，采样到这个数就行了
+
+Pseudocode
+
+![KLD_MCL_Pcode](image/KLD_MCL_Pcode)
+
+对应部分：
+
+```html
+<param name="kld_err" value="0.05"/>
+<param name="kld_z" value="0.99"/>
+```
+
+#### 4、MCL Sample_motion_model
+
+![MCL_Sample_motion_model_1](image/MCL_Sample_motion_model_1)
+
+![MCL_Sample_motion_model_2](image/MCL_Sample_motion_model_2)
+
+对应部分：
+
+```html
+<param name="odom_model_type" value="diff"/>
+<param name="odom_alpha5" value="0.1"/>
+<param name="odom_alpha1" value="0.2"/>
+<param name="odom_alpha2" value="0.2"/>
+<param name="odom_alpha3" value="0.8"/>
+<param name="odom_alpha4" value="0.2"/>
+```
+
+#### 5、MCL measurement_model
+
+![MCL_measurement_model_1](image/MCL_measurement_model_1)
+
+![MCL_measurement_model_2](image/MCL_measurement_model_2)
+
+对应部分：
+
+```html
+<param name="laser_z_hit" value="0.5"/>
+<param name="laser_z_short" value="0.05"/>
+<param name="laser_z_max" value="0.05"/>
+<param name="laser_z_rand" value="0.5"/>
+<param name="laser_sigma_hit" value="0.2"/>
+<param name="laser_lambda_short" value="0.1"/>
+```
+
+![MCL_measurement_model_3](image/MCL_measurement_model_3)
+
+对应部分：
+
+```html
+<param name="laser_likelihood_max_dist" value="2.0"/>
+<param name="laser_model_type" value="likelihood_field"/>
+```
+
+#### 6、AMCL package in the Navigation framework
+
+蒙特卡洛定位方法
+二维环境定位
+针对已有地图使用粒子滤波器跟踪一个机器人的姿态
+
+![AMCL_package_introduction](image/AMCL_package_introduction)
+
+AMCL功能包中的话题和服务
+
+![AMCL话题](image/AMCL话题)
+
+实际上初始位姿可以通过参数提供也可以使用默认初始值，我们主要是要将scan（激光）、tf和map主题提供给amcl。
+
+相关链接: http://wiki.ros.org/amcl
+
+里程计本身也是可以协助机器人定位的，不过里程计存在累计误差且一些特殊情况时(车轮打滑)会出现定位错误的情况，amcl 则可以通过估算机器人在地图坐标系下的姿态，再结合里程计提高定位准确度。
+
+![AMCL里程计](image/AMCL里程计)
+
+里程计定位:只是通过里程计数据实现/odom_frame 与 /base_frame 之间的坐标变换。
+amcl定位: 可以提供 /map_frame 、/odom_frame 与 /base_frame 之间的坐标变换。
+
+![AMCL转换](image/AMCL转换)
+
+AMCL中的一些重要参数
+
+![AMCL参数](image/AMCL参数)
+
+#### 7、Code for smartcar
+
+##### 1) Creating a catkin Packag
+
+`cd ~/smartcar_ws/src`
+
+`catkin_create_pkg smartcar_navigation roscpp rospy sensor_msgs geometry_msgs move_base_msgs`
+
+##### 2) Write a launch file for amcl
+
+`cd ~/smartcar_ws/src/smartcar_navigation`
+
+`mkdir launch`
+
+`cd launch`
+
+`touch amcl.launc`
+
+Code
+
+```html
+<launch>
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+		<!-- Publish scans from best pose at a max of 10 Hz -->
+		<!--可视化扫描和路径信息的最大周期-->
+		<!--例如: 10Hz＝0.1秒，-1.0 则被禁用-->
+		<param name="gui_publish_rate" value="10.0"/>
+
+		<param name="laser_max_beams" value="30"/>
+
+		<param name="min_particles" value="500"/> <!--允许的最小粒子数量-->
+		<param name="max_particles" value="5000"/> <!--允许的最大粒子数量（越大越好)-->
+
+		<param name="update_min_d" value="0.2"/> <!--执行滤波器更新之前所需的平移运动（以米为单位）-->
+		<param name="update_min_a" value="0.5"/> <!--执行滤波器更新之前所需的旋转运动（以弧 度为单位-->
+		<param name="kld_err" value="0.05"/> <!--实际分布与估计分布之间的最大误差-->
+		<param name="kld_z" value="0.99"/>
+
+		<param name="resample_interval" value="1"/> <!--重采样间隔 -->
+
+		<param name="transform_tolerance" value="0.1"/> <!--允许的转换时间（以秒为单位）-->
+
+		<param name="recovery_alpha_slow" value="0.0"/> <!--指数衰减率-->
+		<param name="recovery_alpha_fast" value="0.0"/> <!--指数衰减率-->
+
+		<!--Laser model parameters-->
+		<param name="laser_z_hit" value="0.5"/>
+		<param name="laser_z_short" value="0.05"/>
+		<param name="laser_z_max" value="0.05"/>
+		<param name="laser_z_rand" value="0.5"/>
+		<param name="laser_sigma_hit" value="0.2"/>
+		<param name="laser_lambda_short" value="0.1"/>
+
+		<!-- Maximum distance to do obstacle inflation on map-->
+		<param name="laser_likelihood_max_dist" value="2.0"/>
+		<param name="laser_model_type" value="likelihood_field"/>
+		<!-- <param name="laser_model_type" value="beam"/> -->
+
+		<!-- Odometry model parameters-->
+		<param name="odom_model_type" value="diff"/>
+		<param name="odom_alpha5" value="0.1"/>
+		<param name="odom_alpha1" value="0.2"/>
+		<param name="odom_alpha2" value="0.2"/>
+		<param name="odom_alpha3" value="0.8"/>
+		<param name="odom_alpha4" value="0.2"/>
+		<param name="odom_frame_id" value="odom"/> <!-- 里程计坐标系 -->
+		<param name="base_frame_id" value="base_footprint"/> <!--添加机器人基坐标系-->
+		<param name="global_frame_id" value="map"/> <!--添加地图坐标系-->
+	</node>
+</launch>
+```
+
+##### 3) Write a launch file for testing AMCL
+
+The AMCL node cannot be run independently. It is necessary to load the global map first, and then start RVIZ to display the localizing results.
+
+`cd ~/smartcar_ws/src/smartcar_navigation`
+
+`mkdir launch`
+
+`cd launch`
+
+`touch smartcar_amcl.launch`
+
+Code
+```html
+<launch>
+	<arg name="map" default="maze_cartograhper.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find smartcar_slam)/map/$(arg map)"/>
+	<include file="$(find smartcar_navigation)/launch/amcl.launch"/>
+	<node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
+```
+##### 4) Steps to run AMCL
+
+`roslaunch smartcar_gazebo smartcar_with_laser_nav.launch`
+
+`rosrun rqt_tf_tree rosrun rqt_tf_tree`
+
+![tree_1](image/tree_1)
+
+`$roslaunch smartcar_navigation smartcar_amcl.launch`
+
+`rosrun rqt_tf_tree rosrun rqt_tf_tree`
+
+![tree_2](image/tree_2)
+
+`roslaunch smartcar_teleop smartcar_teleop.launch`
+
+#### 8、Code for turtlebot3
+
+You can create a launch file with the following code and run it in your world with turtlebot3(Please change the map_file).
+
+```html
+<launch>
+	<!-- Arguments -->
+	<arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+	<arg name="map_file" default="$(find pokemon_simulator)/map/maze_cartographer.yaml"/>
+	<arg name="open_rviz" default="true"/>
+	<arg name="cmd_vel_topic" default="/cmd_vel" />
+	<arg name="odom_topic" default="odom" />
+	<arg name="move_forward_only" default="false"/>
+	<arg name="scan_topic"     default="scan"/>
+	<arg name="initial_pose_x" default="0.0"/>
+	<arg name="initial_pose_y" default="0.0"/>
+	<arg name="initial_pose_a" default="0.0"/>
+	<arg name="multi_robot_name" default=""/>
+
+	<!-- TurtleBot3 -->
+	<arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro'" />
+	<param name="robot_description" command="$(arg urdf_file)" />
+
+	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+		<param name="publish_frequency" type="double" value="50.0" />
+		<param name="tf_prefix" value="$(arg multi_robot_name)"/>
+	</node>
+
+	<!-- Map server -->
+	<node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+	<!-- AMCL -->
+	<node pkg="amcl" type="amcl" name="amcl">
+
+		<param name="min_particles"             value="500"/>
+		<param name="max_particles"             value="3000"/>
+		<param name="kld_err"                   value="0.02"/>
+		<param name="update_min_d"              value="0.20"/>
+		<param name="update_min_a"              value="0.20"/>
+		<param name="resample_interval"         value="1"/>
+		<param name="transform_tolerance"       value="0.5"/>
+		<param name="recovery_alpha_slow"       value="0.00"/>
+		<param name="recovery_alpha_fast"       value="0.00"/>
+		<param name="initial_pose_x"            value="$(arg initial_pose_x)"/>
+		<param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
+		<param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
+		<param name="gui_publish_rate"          value="50.0"/>
+
+		<remap from="scan"                      to="$(arg scan_topic)"/>
+		<param name="laser_max_range"           value="3.5"/>
+		<param name="laser_max_beams"           value="180"/>
+		<param name="laser_z_hit"               value="0.5"/>
+		<param name="laser_z_short"             value="0.05"/>
+		<param name="laser_z_max"               value="0.05"/>
+		<param name="laser_z_rand"              value="0.5"/>
+		<param name="laser_sigma_hit"           value="0.2"/>
+		<param name="laser_lambda_short"        value="0.1"/>
+		<param name="laser_likelihood_max_dist" value="2.0"/>
+		<param name="laser_model_type"          value="likelihood_field"/>
+
+		<param name="odom_model_type"           value="diff"/>
+		<param name="odom_alpha1"               value="0.1"/>
+		<param name="odom_alpha2"               value="0.1"/>
+		<param name="odom_alpha3"               value="0.1"/>
+		<param name="odom_alpha4"               value="0.1"/>
+		<param name="odom_frame_id"             value="odom"/>
+		<param name="base_frame_id"             value="base_footprint"/>
+
+	</node>
+
+	<!-- move_base -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+		<rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find turtlebot3_navigation)/param/move_base_params.yaml" command="load" />
+		<rosparam file="$(find turtlebot3_navigation)/param/dwa_local_planner_params_$(arg model).yaml" command="load" />
+		<remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+		<remap from="odom" to="$(arg odom_topic)"/>
+		<param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
+	</node>
+</launch>
+```
+
+#### 9、Result
+
+![AMCL_result](image/AMCL_result)
