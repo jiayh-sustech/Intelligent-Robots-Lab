@@ -54,7 +54,7 @@
 </launch>
 ```
 Result:
-![gmapping_result](image/gmapping_result)
+![gmapping_result](image/gmapping_result.png)
 
 
 ### hector_slam
