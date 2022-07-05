@@ -94,6 +94,7 @@ Source installation
 
 Create launch file
 `cd ~/smartcar/src/smartcar_slam/launch`
+
 `touch smartcar_hector.launch`
 
 Code:
@@ -142,7 +143,9 @@ Code:
 ##### 2) Running hector_slam in Simulation
 
 `roslaunch smartcar_gazebo smartcar_with_laser_nav.launch`
+
 `roslaunch smartcar_slam smartcar_hector.launch`
+
 `roslaunch smartcar_teleop smartcar_teleop.launch`
 
 ##### 3) Save map
@@ -267,6 +270,7 @@ Package installation
 
 Create launch file
 `cd ~/smartcar/src/smartcar_slam/launch`
+
 `touch smartcar_cartographer.launch`
 
 Code
@@ -359,7 +363,9 @@ return options
 ##### 3) Running Cartographer in Simulation
 
 `roslaunch smartcar_gazebo smartcar_with_laser_nav.launch`
+
 `roslaunch smartcar_slam smartcar_cartographer.launch`
+
 `roslaunch smartcar_teleop smartcar_teleop.launch`
 
 ##### 4) Save map
