@@ -768,3 +768,11 @@ You can create a launch file with the following code and run it in your world wi
 #### 9、Result
 
 ![AMCL_result](image/AMCL_result)
+
+## Lab Task
+
+Based on the Lab Project we provided, you are required to complete the following tasks:
+
+1、Using the three SLAM algorithms (gmapping /hector/cartographer), building maps of the maze environment respectively and compare them. Write a lab report, the report contains code, steps, results, results analysis, and other contents you want to share!
+2、Create pokenmon_navigation package,add amcl to the package ,and then test it and get the desired results.
+Finally submit the report comparing the three SLAM and the zip file of pokemon_ws to BB.
