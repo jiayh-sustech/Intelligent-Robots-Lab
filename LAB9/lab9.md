@@ -17,7 +17,7 @@
 
 论文可参考：http://openslam.org/gmapping/html
 
-##### 2、code in turtlebot3
+##### 2、code for turtlebot3
 ```html
 <launch>
   <!-- Arguments -->
