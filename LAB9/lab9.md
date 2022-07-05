@@ -452,7 +452,7 @@ You can create a launch file with the following code and run it in your world wi
 
 所谓定位就是推算机器人自身在全局地图中的位置，当然，SLAM中也包含定位算法实现，不过SLAM的定位是用于构建全局地图的，是属于导航开始之前的阶段，而当前定位是用于导航中，导航中，机器人需要按照设定的路线运动，通过定位可以判断机器人的实际轨迹是否符合预期。在ROS的导航功能包集navigation中提供了 amcl 功能包，用于实现导航中的机器人定位。
 
-![Introduction_of_Localization](image/Introduction_of_Localization)
+![Introduction_of_Localization](image/Introduction_of_Localization.png)
 
 相关链接
 
@@ -469,7 +469,7 @@ Monte-Carlo Localization is a kind of particle filter used to generate particles
 
 Pseudocode
 
-![MCL_Pcode](image/MCL_Pcode)
+![MCL_Pcode](image/MCL_Pcode.png)
 
 问题：器人突然被抱走，放到了另外一个地方，多少粒子合适？
 
@@ -481,7 +481,7 @@ Pseudocode
 
 Pseudocode
 
-![AMCL_Pcode](image/AMCL_Pcode)
+![AMCL_Pcode](image/AMCL_Pcode.png)
 
 #### 3、KLD MCL
 
@@ -489,7 +489,7 @@ Pseudocode
 
 Pseudocode
 
-![KLD_MCL_Pcode](image/KLD_MCL_Pcode)
+![KLD_MCL_Pcode](image/KLD_MCL_Pcode.png)
 
 对应部分：
 
@@ -500,9 +500,9 @@ Pseudocode
 
 #### 4、MCL Sample_motion_model
 
-![MCL_Sample_motion_model_1](image/MCL_Sample_motion_model_1)
+![MCL_Sample_motion_model_1](image/MCL_Sample_motion_model_1.png)
 
-![MCL_Sample_motion_model_2](image/MCL_Sample_motion_model_2)
+![MCL_Sample_motion_model_2](image/MCL_Sample_motion_model_2.png)
 
 对应部分：
 
@@ -517,9 +517,9 @@ Pseudocode
 
 #### 5、MCL measurement_model
 
-![MCL_measurement_model_1](image/MCL_measurement_model_1)
+![MCL_measurement_model_1](image/MCL_measurement_model_1.png)
 
-![MCL_measurement_model_2](image/MCL_measurement_model_2)
+![MCL_measurement_model_2](image/MCL_measurement_model_2.png)
 
 对应部分：
 
@@ -532,7 +532,7 @@ Pseudocode
 <param name="laser_lambda_short" value="0.1"/>
 ```
 
-![MCL_measurement_model_3](image/MCL_measurement_model_3)
+![MCL_measurement_model_3](image/MCL_measurement_model_3.png)
 
 对应部分：
 
@@ -547,11 +547,11 @@ Pseudocode
 二维环境定位
 针对已有地图使用粒子滤波器跟踪一个机器人的姿态
 
-![AMCL_package_introduction](image/AMCL_package_introduction)
+![AMCL_package_introduction](image/AMCL_package_introduction.png)
 
 AMCL功能包中的话题和服务
 
-![AMCL话题](image/AMCL话题)
+![AMCL话题](image/AMCL话题.png)
 
 实际上初始位姿可以通过参数提供也可以使用默认初始值，我们主要是要将scan（激光）、tf和map主题提供给amcl。
 
@@ -559,16 +559,16 @@ AMCL功能包中的话题和服务
 
 里程计本身也是可以协助机器人定位的，不过里程计存在累计误差且一些特殊情况时(车轮打滑)会出现定位错误的情况，amcl 则可以通过估算机器人在地图坐标系下的姿态，再结合里程计提高定位准确度。
 
-![AMCL里程计](image/AMCL里程计)
+![AMCL里程计](image/AMCL里程计.png)
 
 里程计定位:只是通过里程计数据实现/odom_frame 与 /base_frame 之间的坐标变换。
 amcl定位: 可以提供 /map_frame 、/odom_frame 与 /base_frame 之间的坐标变换。
 
-![AMCL转换](image/AMCL转换)
+![AMCL转换](image/AMCL转换.png)
 
 AMCL中的一些重要参数
 
-![AMCL参数](image/AMCL参数)
+![AMCL参数](image/AMCL参数.png)
 
 #### 7、Code for smartcar
 
@@ -669,13 +669,13 @@ Code
 
 `rosrun rqt_tf_tree rosrun rqt_tf_tree`
 
-![tree_1](image/tree_1)
+![tree_1](image/tree_1.png)
 
 `$roslaunch smartcar_navigation smartcar_amcl.launch`
 
 `rosrun rqt_tf_tree rosrun rqt_tf_tree`
 
-![tree_2](image/tree_2)
+![tree_2](image/tree_2.png)
 
 `roslaunch smartcar_teleop smartcar_teleop.launch`
 
@@ -767,7 +767,7 @@ You can create a launch file with the following code and run it in your world wi
 
 #### 9、Result
 
-![AMCL_result](image/AMCL_result)
+![AMCL_result](image/AMCL_result.png)
 
 ## Lab Task
 
