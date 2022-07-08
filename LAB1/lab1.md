@@ -144,10 +144,10 @@ Select the option, you see fit & press Continue
 | ----- | ------- | ---- | ------- | ---- |
 | /boot | Primary | Ext4 | 2048MB  | 2G   |
 | /home | Logical | Ext4 | 51200MB | 50G  |
-| /tmp  | Logical | Ext4 | 10240MB | 10G  |
-| /usr  | Logical | Ext4 | 10240MB | 10G  |
+| /tmp  | Logical | Ext4 | 5120MB  | 5G   |
+| /usr  | Logical | Ext4 | 20480MB | 20G  |
 | /var  | Logical | Ext4 | 20480MB | 20G  |
-|       | Logical | Swap | 15655MB | 15G  |
+| /swap | Logical | Swap | 15655MB | 10G  |
 | total |         |      |         | 157G |
 
 You can also allocate the disk yourself according to your free space...
