@@ -13,6 +13,7 @@ Lab4 materials for the intelligent robotics course
 > 4. Robot sensor
 
 
+<br>
 
 ## Part 1: Gazebo
 
@@ -45,10 +46,9 @@ Lab4 materials for the intelligent robotics course
     ```
     sudo apt install ros-noetic-gazebo 
     ```
-
 - Metapackage gazebo_ros_pkgs
-  - A set of packages provides wrappers around the stand-alone Gazebo. They provide the necessary interfaces to simulate a robot in Gazebo using ROS messages, services and dynamic reconfigure. 
-  - Read the installation tutorial from this:http://gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros
+    - A set of packages provides wrappers around the stand-alone Gazebo. They provide the necessary interfaces to simulate a robot in Gazebo using ROS messages, services and dynamic reconfigure. 
+    - Read the installation tutorial from this:http://gazebosim.org/tutorials?tut=ros_installing&cat=connect_ros
 
 
 
@@ -64,7 +64,7 @@ Lab4 materials for the intelligent robotics course
   rosrun gazebo_ros gazebo
   ```
   
-  
+  ![gazebo](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part1_gazebo.png)
 
 
 
@@ -78,9 +78,10 @@ Lab4 materials for the intelligent robotics course
 
 - Create the **models** folder under this folder, and Unzip the downloaded zip file into the **models** folder
 
-  
+  ![gazebo-models](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part1_gazebo-models.png)
 
 
+<br>
 
 ## Part 2: Turtlebot3 Simulation
 
@@ -133,7 +134,7 @@ Lab4 materials for the intelligent robotics course
   roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
   ```
   
-  
+  ![teleop](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_teleop.gif)
 
 
 
@@ -159,7 +160,9 @@ Lab4 materials for the intelligent robotics course
   roslaunch turtlebot3_gazebo turtlebot3_gazebo_rviz.launch
   ```
 
+  ![turtlebot-world2](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_turtlebot3-world2.png)
   
+  ![turtlebot-world1](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_turtlebot3-world1.gif)
 
 
 
@@ -170,6 +173,7 @@ Lab4 materials for the intelligent robotics course
   - In this application, we show the convenience and power of Gazebo in simulation of SLAM and navigation.
 
 
+<br>
 
 ## Part 3: Network Configuration
 
@@ -254,6 +258,7 @@ ROS can run on multiple machines trough network
 - Distributed system can do some calculation in remote nodes (like MATLAB)
 
 
+<br>
 
 ## Part 4: Robot Sensor
 
@@ -271,7 +276,7 @@ ROS can run on multiple machines trough network
   rosrun image_view image_view image:=/image_raw
   ```
 
-  
+  ![camera](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part4_camera.png)
 
 
 
@@ -285,7 +290,7 @@ Camera calibration is necessary if you are measuring distance from images acquir
   rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/image_raw camera:=/camera
   ```
 
-  
+  ![camera-calibration](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part4_camera-calibration.png)
 
   ```
   cd /tmp 
@@ -346,6 +351,7 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
   - Odometry - Odometry is another important sensor. It provides *nav_msgs/Odometry* message by base, defaultly */odom*
 
 
+<br>
 
 ## Lab Task
 
@@ -353,7 +359,9 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
 
 - Following the instructions on website: http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/# and complete until following:
 
+  ![lab-task1](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/task_real-simulation1.png)
   
+  ![lab-task2](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/task_real-simulation2.png)
 
 
 
@@ -413,6 +421,7 @@ If you couldn't use the real turtlebot in the lab room, the following tasks are 
 7. Back to your own PC and replay the bag, then complete your task refer to the supplementary.
 
 
+<br>
 
 ## Lab References
 
