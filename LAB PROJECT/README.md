@@ -51,11 +51,11 @@ Here are the rules:
 
 2. Time: total <font color=#00000FF>10 points</font>. Every group has at most 7 minutes.
 
-| Time (min)       | Points |
-| ---------------- | ------ |
-| <3               | 10     |
-| 3$\leq$&&<5      | 8      |
-| 5$\leq$&&$\leq$7 | 5      |
+| Time (min) | Points |
+| ---------- | ------ |
+| <3         | 10     |
+| 3<=&&<=5   | 8      |
+| 5<=&&<=7   | 5      |
 
 3. Strategy : we encourage you to use novel and high level techniques.
 
