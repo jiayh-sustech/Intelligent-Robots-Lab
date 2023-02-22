@@ -5,9 +5,11 @@
 ## 1. tf
 
 **Coordinate transformation**
+
 $$
 \boldsymbol{a}^{\prime}=\boldsymbol{R a}+\boldsymbol{t}
 $$
+
 **Homogeneous**
 
 $$\begin{aligned}&{\left[\begin{array}{l}
@@ -66,9 +68,13 @@ rosrun rviz rviz -d `rospack find turtle_tf`/rviz/turtle_rviz.rviz
 ```
 
 **view_frames** creates a diagram of the frames being broadcast by tf over ROS.
+
 *(If there are type error, please referance this [link](https://blog.csdn.net/xiaowang_tongxue/article/details/108298544))*
+
 **rqt_tf_tree** is a runtime tool for visualizing the tree of frames being broadcast.
+
 **tf_echo** reports the transform between any two frames broadcast over ROS.
+
 **rviz** is a visualization tool that is useful for examining tf frames.
 
 <img src="./imgs/02.gif" alt="02" style="zoom: 80%;" />
