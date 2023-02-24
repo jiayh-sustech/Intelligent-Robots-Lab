@@ -57,6 +57,8 @@ $$\begin{aligned}&{\left[\begin{array}{l}
 
 ### tf introduction demo 1
 
+*<ROS_DISTRO> need to be replaced by ROS version name (melodic or noetic)*
+
 ```bash
 sudo apt-get install ros-<ROS_DISTRO>-ros-tutorials ros-<ROS_DISTRO>-geometry-tutorials ros-<ROS_DISTRO>-rviz ros-<ROS_DISTRO>-rosbash ros-<ROS_DISTRO>-rqt-tf-tree
 roslaunch turtle_tf turtle_tf_demo.launch
