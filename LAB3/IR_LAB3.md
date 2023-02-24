@@ -217,13 +217,14 @@ Same effect as demo 1
 rqt_console & rqt_plot & rqt_graph & rqt_image_view
 
 *<ROS_DISTRO> need to be replaced by ROS version name (melodic or noetic)*
+*Remenber change setting usb to usb3.1 and open camera if you use VMWare*
 
 ```bash
-sudo apt-get install ros-<ROS_DISTRO>-libuvc-camera
+sudo apt-get install ros-<ROS_DISTRO>-uvc-camera
 sudo apt-get install ros-<ROS_DISTRO>-image-*
 sudo apt-get install ros-<ROS_DISTRO>-rqt-image-view
 roscore
-rosrun libuvc_camera camera_node
+rosrun uvc_camera uvc_camera_node
 rostopic list
 rqt_image_view
 ```
