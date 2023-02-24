@@ -214,6 +214,8 @@ Same effect as demo 1
 
 rqt_console & rqt_plot & rqt_graph & rqt_image_view
 
+*<ROS_DISTRO> need to be replaced by ROS version name (melodic or noetic)*
+
 ```bash
 sudo apt-get install ros-<ROS_DISTRO>-libuvc-camera
 sudo apt-get install ros-<ROS_DISTRO>-image-*
