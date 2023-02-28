@@ -252,7 +252,7 @@ rqt_image_view
 
 For ubuntu 20.04:
 ```
-sudo apt-get install ros-noetic-camera-info-manager
+sudo apt-get install ros-noetic-camera-info-manager ros-noetic-image-view
 cd ~/catkin_ws/src
 git clone https://github.com/ros-drivers/usb_cam.git
 cd ..
