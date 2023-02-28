@@ -57,16 +57,36 @@ $$\begin{aligned}&{\left[\begin{array}{l}
 
 ### tf introduction demo 1
 
-*<ROS_DISTRO> need to be replaced by ROS version name (melodic or noetic)*
+
+
+Ubuntu 18.04:
 
 ```bash
-sudo apt-get install ros-<ROS_DISTRO>-ros-tutorials ros-<ROS_DISTRO>-geometry-tutorials ros-<ROS_DISTRO>-rviz ros-<ROS_DISTRO>-rosbash ros-<ROS_DISTRO>-rqt-tf-tree
+sudo apt-get install ros-melodic-ros-tutorials ros-melodic-geometry-tutorials ros-melodic-rviz ros-melodic-rosbash ros-melodic-rqt-tf-tree
 roslaunch turtle_tf turtle_tf_demo.launch
 rosrun turtlesim turtle_teleop_key
 rosrun tf view_frames
 rosrun rqt_tf_tree rqt_tf_tree
 rosrun tf tf_echo turtle1 turtle2
 rosrun rviz rviz -d `rospack find turtle_tf`/rviz/turtle_rviz.rviz
+```
+
+Ubuntu 20.04:
+
+```bash
+sudo apt-get install ros-noetic-ros-tutorials ros-noetic-geometry-tutorials ros-noetic-rviz ros-noetic-rosbash ros-noetic-rqt-tf-tree
+roslaunch turtle_tf turtle_tf_demo.launch
+rosrun turtlesim turtle_teleop_key
+rosrun tf view_frames
+rosrun rqt_tf_tree rqt_tf_tree
+rosrun tf tf_echo turtle1 turtle2
+rosrun rviz rviz -d `rospack find turtle_tf`/rviz/turtle_rviz.rviz
+```
+
+**If there are ERROR "Python permition denied", you need to add soft link as below:**
+
+```
+sudo ln -s /usr/bin/python3 /usr/bin/python
 ```
 
 **view_frames** creates a diagram of the frames being broadcast by tf over ROS.
@@ -216,19 +236,32 @@ Same effect as demo 1
 
 rqt_console & rqt_plot & rqt_graph & rqt_image_view
 
-*<ROS_DISTRO> need to be replaced by ROS version name (melodic or noetic)*
-
 *Remenber change setting usb to usb3.1 and open camera if you use VMWare*
 
+For ubuntu 18.04:
+
 ```bash
-sudo apt-get install ros-<ROS_DISTRO>-uvc-camera
-sudo apt-get install ros-<ROS_DISTRO>-image-*
-sudo apt-get install ros-<ROS_DISTRO>-rqt-image-view
+sudo apt-get install ros-melodic-uvc-camera
+sudo apt-get install ros-melodic-image-*
+sudo apt-get install ros-melodic-rqt-image-view
 roscore
 rosrun uvc_camera uvc_camera_node
 rostopic list
 rqt_image_view
 ```
+
+For ubuntu 20.04:
+```
+cd ~/catkin_ws/src
+git clone https://github.com/ros-drivers/usb_cam.git
+cd ..
+catkin_make
+source devel/setup.bash
+# open camera
+roslaunch usb_cam usb_cam-test.launch
+```
+
+
 
 ### Rviz
 
