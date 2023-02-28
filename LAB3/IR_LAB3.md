@@ -215,11 +215,11 @@ source devel/setup.bash
 
 **Step 5.** Running
 
+*NOTE: Don't forget to make the node executable:* 
+
 ```bash
 roslaunch learning_tf learning_tf_py.launch
 ```
-
-*NOTE: Don't forget to make the node executable:* 
 
 ```bash
 roscd learning_tf
