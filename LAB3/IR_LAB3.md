@@ -218,12 +218,12 @@ source devel/setup.bash
 *NOTE: Don't forget to make the node executable:* 
 
 ```bash
-roslaunch learning_tf learning_tf_py.launch
+roscd learning_tf
+sudo chmod +x scripts/*.py
 ```
 
 ```bash
-roscd learning_tf
-sudo chmod +x scripts/*.py
+roslaunch learning_tf learning_tf_py.launch
 ```
 
 **Step 6.** Checking the results
