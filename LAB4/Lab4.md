@@ -1,5 +1,9 @@
 # Intelligent-Robots-Lab4
 
+修订：12232434 孙耀威（今天也是没有犯病的一天～）
+
+
+
 Lab4 materials for the intelligent robotics course
 
 > **Objectives:**
@@ -12,6 +16,14 @@ Lab4 materials for the intelligent robotics course
 >
 > 4. Robot sensor
 
+## 课程任务 task
+1. 安装并打开gazebo
+2. 使用gazebo进行简单的turtlebot3的仿真
+3. 学习ros的网络配置（为后续实际远程使用turtlebot3或者其他小车准备）
+4. 学会将摄像头图像传至ros并进行简单的标定
+5. 在仿真/现实环境中运行turtlebot3并获取机器人的感知数据（图像，雷达等），并让车无人驾驶起来
+
+（今天又是跟着~~麻瓜式~~教程的一天呢）
 
 <br>
 
@@ -64,7 +76,7 @@ Lab4 materials for the intelligent robotics course
   rosrun gazebo_ros gazebo
   ```
   
-  ![gazebo](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part1_gazebo.png)
+  ![gazebo](imgs/part1_gazebo.png)
 
 
 
@@ -72,13 +84,17 @@ Lab4 materials for the intelligent robotics course
 
 - Model files load slowly and may take a long time, so we manually download the model.
 
-- Download the model from: https://github.com/osrf/gazebo_models
+- Download the model from: https://github.com/osrf/gazebo_models （自己手动进github连接里下载模型）
+
 
 - Find the **.gazebo** folder in your home path (this directory is hidden, use Ctrl+h to show the hidden directory)
 
+  ![gazebo](imgs/img1.png)
+
+
 - Create the **models** folder under this folder, and Unzip the downloaded zip file into the **models** folder
 
-  ![gazebo-models](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part1_gazebo-models.png)
+  ![gazebo](imgs/img2.png)
 
 
 <br>
@@ -100,7 +116,13 @@ Lab4 materials for the intelligent robotics course
 - Install dependency package
 
   ```
-  sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc ros-noetic-rgbd-launch ros-noetic-depthimage-to-laserscan ros-noetic-rosserial-arduino ros-noetic-rosserial-python ros-noetic-rosserial-server ros-noetic-rosserial-client ros-noetic-rosserial-msgs ros-noetic-amcl ros-noetic-map-server ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro ros-noetic-compressed-image-transport ros-noetic-rqt-image-view ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers
+  # ubuntu20 下载这个
+  sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc ros-noetic-rgbd-launch ros-noetic-depthimage-to-laserscan ros-noetic-rosserial-arduino ros-noetic-rosserial-python ros-noetic-rosserial-server ros-noetic-rosserial-client ros-noetic-rosserial-msgs ros-noetic-amcl ros-noetic-map-server ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro ros-noetic-compressed-image-transport ros-noetic-rqt-image-view ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers -y
+  ```
+
+    ```
+  # ubuntu18 下载这个(18的没有测试，可能有问题)
+  sudo apt-get install ros-melodic-joy ros-melodic-teleop-twist-joy ros-melodic-teleop-twist-keyboard ros-melodic-laser-proc ros-melodic-rgbd-launch ros-melodic-depthimage-to-laserscan ros-melodic-rosserial-arduino ros-melodic-rosserial-python ros-melodic-rosserial-server ros-melodic-rosserial-client ros-melodic-rosserial-msgs ros-melodic-amcl ros-melodic-map-server ros-melodic-move-base ros-melodic-urdf ros-melodic-xacro ros-melodic-compressed-image-transport ros-melodic-rqt-image-view ros-melodic-gmapping ros-melodic-navigation ros-melodic-interactive-markers -y
   ```
 
 - Install turtlebot3 and simulation (Run commands below in terminal line by line)
@@ -122,7 +144,7 @@ Lab4 materials for the intelligent robotics course
 - Identify the model used
 
   ```java
-  echo "exportTURTLEBOT3_MODEL=burger" >> ~/.bashrc
+  echo "export TURTLEBOT3_MODEL=burger" >> ~/.bashrc
   //TURTLEBOT3_MODEL is the name of the model you are using in burger, waffle, waffle_pi
   source ~/.bashrc
   roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
@@ -134,16 +156,17 @@ Lab4 materials for the intelligent robotics course
   roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
   ```
   
-  ![teleop](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_teleop.gif)
+  ![teleop](imgs/part2_teleop.gif)
 
 
 
 **Launch the virtual turtlebot3 in TurtleBot3 World**
 
+在开启下面教程之前，把上面跑的空世界的终端关掉
 - New terminal, load gazebo
 
   ```java
-  exportTURTLEBOT3_MODEL=waffle
+  export TURTLEBOT3_MODEL=waffle
   //TURTLEBOT3_MODEL is the name of the model you are using in burger, waffle, waffle_pi
   roslaunch turtlebot3_gazebo turtlebot3_world.launch
   ```
@@ -160,9 +183,9 @@ Lab4 materials for the intelligent robotics course
   roslaunch turtlebot3_gazebo turtlebot3_gazebo_rviz.launch
   ```
 
-  ![turtlebot-world2](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_turtlebot3-world2.png)
+  ![turtlebot-world2](imgs/part2_turtlebot3-world2.png)
   
-  ![turtlebot-world1](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part2_turtlebot3-world1.gif)
+  ![turtlebot-world1](imgs/part2_turtlebot3-world1.gif)
 
 
 
@@ -176,6 +199,8 @@ Lab4 materials for the intelligent robotics course
 <br>
 
 ## Part 3: Network Configuration
+
+该实验用来教学如何通过ros进行多机器交互（比如两台电脑，又比如一台机器人跟一台电脑）
 
 **Check the IP of both the host and remote PC** 
 
@@ -264,6 +289,8 @@ ROS can run on multiple machines trough network
 
 **Camera**
 
+这部分教学如何通过将相机图像传至ros，详情参考lab3部分
+
 - The camera corresponds to the eye in the robot. The images obtained from the camera are very useful for recognizing the environment around the robot
 
   ```
@@ -276,7 +303,7 @@ ROS can run on multiple machines trough network
   rosrun image_view image_view image:=/image_raw
   ```
 
-  ![camera](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part4_camera.png)
+  ![camera](imgs/part4_camera.png)
 
 
 
@@ -290,7 +317,7 @@ Camera calibration is necessary if you are measuring distance from images acquir
   rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/image_raw camera:=/camera
   ```
 
-  ![camera-calibration](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/part4_camera-calibration.png)
+  ![camera-calibration](imgs/part4_camera-calibration.png)
 
   ```
   cd /tmp 
@@ -359,9 +386,9 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
 
 - Following the instructions on website: http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/# and complete until following:
 
-  ![lab-task1](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/task_real-simulation1.png)
+  ![lab-task1](imgs/task_real-simulation1.png)
   
-  ![lab-task2](https://github.com/jiayh-sustech/Intelligent-Robots-Lab/blob/main/LAB4/imgs/task_real-simulation2.png)
+  ![lab-task2](imgs/task_real-simulation2.png)
 
 
 
@@ -369,57 +396,24 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
 
 If you couldn't use the real turtlebot in the lab room, the following tasks are done by gazebo. 
 
-1. In terminal
+旧的教程无法使用，直接跟着官网把
+1. 相机标定
+2. 车道识别
+3. 交通标志识别
+4. 红绿灯识别
+5. 综合系统运行
 
-   ```
-   cd ~/turtlebot3_ws/src/
-   git clone https://github.com/ROBOTIS-GIT/turtlebot3_autorace.git
-   cd ~/catkin_ws && catkin_make
-   roslaunch turtlebot3_gazebo turtlebot3_autorace.launch 
-   ```
+等部分一路跟着做完，代码都是现成的，跟着教程走完大概体会下一部自动驾驶的小车是怎么一步步实现各种功能的
 
-2. New terminal, start Traffic Light, Parking and Toll Gate quest nodes in Gazebo, they will automatically run when turtlebot3 passes the quest area.
+https://emanual.robotis.com/docs/en/platform/turtlebot3/autonomous_driving/#getting-started
 
-   ```
-   roslaunch turtlebot3_gazebo turtlebot3_autorace_mission.launch 
-   ```
+进入页面后，ubuntu20的系统点击noetic，18的系统点击melodic
 
-3. New terminal for camera calibration
+  ![lab-task2](imgs/img3.png)
 
-   ```
-   export GAZEBO_MODE=true
-   export AUTO_IN_CALIB=action
-   roslaunch turtlebot3_autorace_camera turtlebot3_autorace_intrinsic_camera_calibration.launch
-   ```
+  看到没，上面一排各种版本的教程选择
 
-4. New terminal, start turtlebot3_autorace_core
-
-   ```
-   export AUTO_EX_CALIB=action 
-   export AUTO_DT_CALIB=action
-   export TURTLEBOT3_MODEL=burger 
-   roslaunch turtlebot3_autorace_core turtlebot3_autorace_core.launch
-   ```
-
-5. New terminal, start all autopilot nodes
-
-   ```
-   rostopic pub -1 /core/decided_mode std_msgs/UInt8 "data: 2"
-   ```
-
-6. Record a rosbag containing topics:
-
-   ```
-   /camera/image 
-   /camera/image_mono 
-   /odom 
-   /tf 
-   /scan 
-   /imu
-   ```
-
-7. Back to your own PC and replay the bag, then complete your task refer to the supplementary.
-
+  加油！
 
 <br>
 
