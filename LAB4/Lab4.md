@@ -20,8 +20,8 @@ Lab4 materials for the intelligent robotics course
 1. 安装并打开gazebo
 2. 使用gazebo进行简单的turtlebot3的仿真
 3. 学习ros的网络配置（为后续实际远程使用turtlebot3或者其他小车准备）
-4. 学会将摄像头图像传至ros并进行简单的标定
-5. 在仿真/现实环境中运行turtlebot3并获取机器人的感知数据（图像，雷达等），并让车无人驾驶起来
+4. 学会将摄像头图像传至ros并进行简单的实物标定
+5. 在仿真环境中运行turtlebot3并获取机器人的感知数据（图像，雷达等），并让车无人驾驶起来
 
 （今天又是跟着~~麻瓜式~~教程的一天呢）
 
@@ -382,15 +382,7 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
 
 ## Lab Task
 
-**Real Simulation**
-
-- Following the instructions on website: http://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/# and complete until following:
-
-  ![lab-task1](imgs/task_real-simulation1.png)
-  
-  ![lab-task2](imgs/task_real-simulation2.png)
-
-
+这里删除了实车部分，大家直接转仿真去吧～
 
 **Virtual Simulation**
 
