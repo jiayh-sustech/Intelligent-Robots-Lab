@@ -302,6 +302,7 @@ sudo apt-get install ros-melodic-rqt-image-view
 roscore
 rosrun uvc_camera uvc_camera_node
 rostopic list
+rosrun image_view image_view image:=/image_raw
 rqt_image_view
 ```
 
