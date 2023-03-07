@@ -1,7 +1,8 @@
 # CS401 Intelligent Robotics Lab 02
 
-11912521 唐宁直
-
+编写人员：11912521 唐宁直
+12232434 孙耀威
+[toc]
 ## 1. General Concepts of ROS
 
 **Node:** A node is an executable that uses ROS to communicate with other nodes.
@@ -48,24 +49,30 @@ rqt_graph; rosnode list; rosnode info; rostopic list; rostopic type; rosmsg show
 **Step 1.** Create and build a catkin workspace.
 
 ```
-$mkdir -p ~/catkin_ws/src
-$cd ~/catkin_ws/src
-$catkin_init_workspace
-$cd ~/catkin_ws
-$catkin_make
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+catkin_init_workspace
+cd ~/catkin_ws
+catkin_make
 ```
 
 **Step 2.** Set env.
 
 ```
-$source devel/setup.bash
+source devel/setup.bash
 ```
 
 **Step 3.** Check env
 
 ```
-$echo $ROS_PACKAGE_PATH
+echo $ROS_PACKAGE_PATH
 ```
+**Step 4.** 验证（别问我为什么中英混合）
+此时终端应该会显示出当前创建的package的路径
+
+<img src="./imgs/14.png" alt="1" style="zoom:80%;" />
+
+在这里能看到返回的路径里有刚刚创建的package的src路径
 
 ## 5. ROS Package
 
@@ -87,31 +94,31 @@ $echo $ROS_PACKAGE_PATH
    **Step 1.** Creating a catkin Package.
 
    ```
-   $cd ~/catkin_ws/src
-   $catkin_create_pkg beginner_tutorials std_msgs rospy roscpp
+   cd ~/catkin_ws/src
+   catkin_create_pkg beginner_tutorials std_msgs rospy roscpp
    ```
 
    **Step 2.** Building a catkin workspace.
 
    ```
-   $cd ~/catkin_ws
-   $catkin_make
+   cd ~/catkin_ws
+   catkin_make
    ```
 
    **Step 3.** Sourcing the setup file.
 
    ```
-   $source devel/setup.bash 
+   source devel/setup.bash 
    ```
 
 4. **Practice the following ROS tools.**
 
    ```
-   $ rospack depends1 beginner_tutorials
-   $ rospack find beginner_tutorials
-   $ roscd beginner_tutorials
-   $ roscd log
-   $ rosls beginner_tutorials
+    rospack depends1 beginner_tutorials
+    rospack find beginner_tutorials
+    roscd beginner_tutorials
+    roscd log
+    rosls beginner_tutorials
    ```
 
 4. **Learn the structure of package.xml and CMakeLists.txt.**
@@ -131,47 +138,75 @@ $echo $ROS_PACKAGE_PATH
    **Step 3.** Create a message.
    **Step 4.** Loop while publishing messages to Topic.
 
+    talker.cpp 放置在beginner_tutorials里面的src目录下
+
    `talker.cpp`
 
    ```c++
-   #include "ros/ros.h"
-   #include "std_srvs/SetBool.h"
-   
-   bool print(std_srvs::SetBool::Request &req,
-   		   std_srvs::SetBool::Response &res)
-   {
-   
-   	if (req.data)
-   	{
-   		ROS_INFO("Hello ROS!");
-   		res.success = true;
-   		res.message = "Print Successully";
-   	}
-   	else
-   	{
-   		res.success = false;
-   		res.message = "Print Failed";
-   	}
-   
-   	return true;
-   }
-   
-   int main(int argc, char **argv)
-   {
-   	ros::init(argc, argv, "server");
-   	ros::NodeHandle n;
-   	ros::ServiceServer service = n.advertiseService("print_string", print);
-   	ROS_INFO("Ready to print hello string.");
-   	ros::spin();
-   
-   	return 0;
-   }
+    #include "ros/ros.h"
+    #include "std_msgs/String.h"
+    #include <sstream>
+    int main(int argc, char **argv)
+    {
+        ros::init(argc, argv, "server");
+        ros::NodeHandle n;
+        //ros::ServiceServer service = n.advertiseService("print_string", print);
+        ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+        /// ros::Rate对象用于指定消息发布的频率。下面是要以10Hz的周期发布topic消息
+            ros::Rate loop_rate(10);
+
+            /**
+            * 统计发送的消息数，用于创建第一无二的消息体.
+            */
+            int count = 0;
+            /**
+            * ros::ok()返回false的情况：
+            *   1.CTRL-C
+            *   2.被另一同名节点踢出ROS网络
+            *   3.应用程序其他部分调用了ros::shutdown()
+            *   4.所有的ros::NodeHandlers都销毁
+            * 一旦ros::ok()返回失败，所有的ROS调用都将失败。
+            **/ 
+            while (ros::ok())
+            {
+                /**
+                * 使用何时的消息适应类在ROS上广播消息。通常由msg文件产生，这里使用String消息
+                */
+                std_msgs::String msg;
+                std::stringstream ss;
+                ss << "wang....wang....wang! " << count;
+                msg.data = ss.str();
+                
+                //替换cout/printf等的日志输出函数，可参考rosconsole
+                ROS_INFO("%s", msg.data.c_str());
+
+                /**
+                * publish()会广播一条消息.参数就是消息对象。
+                * 此处需要注意publish()中的参数的类型必须与advertise<>() 调用时设置的类型保持一致
+                */
+                chatter_pub.publish(msg);///发布消息
+
+                /**
+                * 这里ros::spinOnce()调用是不必要的。因为我们没有收到任何回调。但是如果你要在这个程序中添加
+                * 一个subscriber，但是你的程序没有调用ros::spinOnce()那么subscriber所注册的回调函数永远
+                * 不会被调用。这里添加上只是为了以防万一
+                **/
+                ros::spinOnce();
+
+                loop_rate.sleep();///ros::Rate对象按照前面的设置进行休眠延时。
+                ++count;
+            }
+
+        return 0;
+    }
    ```
 
 2. Building Publisher node.
 
    Add two lines to the bottom of the CMakeLists.txt:
-
+   
+   这个CMakeLists.txt是在beginner_tutorials下的
+   
    ```
    add_executable(talker src/talker.cpp)
    target_link_libraries(talker ${catkin_LIBRARIES})
@@ -185,6 +220,9 @@ $echo $ROS_PACKAGE_PATH
    **Step 2.** Subscribe to the Topic.
    **Step 3.** Spin, waiting for messages to arrive.
    **Step 4.** When a message arrives, the Callback function is called.
+
+    listener.cpp 放置在beginner_tutorials里面的src目录下
+
 
    `listener.cpp`
 
@@ -214,23 +252,35 @@ $echo $ROS_PACKAGE_PATH
 
    Add two lines to the bottom of the CMakeLists.txt:
 
+    这个CMakeLists.txt是在beginner_tutorials下的
+
    ```
    add_executable(listener src/listener.cpp)
    target_link_libraries(listener ${catkin_LIBRARIES})
    ```
 
-3. Examine the simple publisher.
+3. 编译package
+   
+   在ros package下的cpp代码都需要编译过后才能运行（虽然本来c语言的代码都是需要编译的就是了）
+   
+    ```
+    cd ~/catkin_ws
+    catkin_make
+   ```
+
+
+4. Examine the simple publisher.
 
    **Step 1.** Start the ROS master.
 
    ```
-   $roscore
+   roscore
    ```
 
    **Step 2. **Running the Publisher.
 
    ```
-   $rosrun beginner_tutorials talker
+   rosrun beginner_tutorials talker
    ```
 
    <img src="./imgs/02.png" alt="2" style="zoom:80%;" />
@@ -238,7 +288,7 @@ $echo $ROS_PACKAGE_PATH
    **Step 3.** Running the subscriber.
 
    ```
-   $rosrun beginner_tutorials listener
+   rosrun beginner_tutorials listener
    ```
 
    <img src="./imgs/03.png" alt="3" style="zoom:80%;" />
@@ -256,6 +306,17 @@ $echo $ROS_PACKAGE_PATH
    + other msg files
    + variable-length array[] and fixed-length array[C]
 
+   1.1 创建消息文件夹
+
+    ```
+    roscd beginner_tutorials/
+    mkdir msg
+    
+    ```
+   
+   1.2 创建消息文件
+    然后下面的Student.msg文件放在msg文件夹里（应该没人问msg文件夹在哪吧？）
+
    `Student.msg`
 
    ```yaml
@@ -271,6 +332,12 @@ $echo $ROS_PACKAGE_PATH
 
 2. **Add package dependencies in package.xml**
 
+package.xml是beginner_tutorials/package.xml
+
+把下面几行指令添加在package.xml中间部分，当然，解除原来文件里面的注释也可以
+
+如果不知道注释在哪建议ctrl + f
+
    ```
    <build_depend>message_generation</build_depend>
    <exec_depend>message_runtime</exec_depend>
@@ -278,19 +345,24 @@ $echo $ROS_PACKAGE_PATH
 
 3. **Add build options in CMakeLists.txt**
 
+CMakeLists.txt是beginner_tutorials/CMakeLists.txt
+
    ```
+   # 文件第10行左右有个find_package，把message_generation添加在末尾
    find_package(... message_generation)
+   #文件第50行左右有被注释的掉的add_message_files ，替换对应内容即可
    add_message_files(FILES Student.msg)
+   #文件第70行左右有被注释的掉的 generate_messages ，替换对应内容即可
    generate_messages(DEPENDENCIES std_msgs)
-   catkin_package(... message_runtime)
    ```
 
 4. **Building**
 
+    老样子，编译
    ```
-   $cd ~/catkin_ws
-   $catkin_make
-   $source devel/setup.bash
+   cd ~/catkin_ws
+   catkin_make
+   source devel/setup.bash
    ```
 
 5. **Checking msg**
@@ -302,6 +374,8 @@ $echo $ROS_PACKAGE_PATH
 6. **Using msg**
 
    `student_publisher.cpp`
+
+   老样子，代码放在beginner_tutorials/src目录下
 
    ```c++
    /**
@@ -349,6 +423,8 @@ $echo $ROS_PACKAGE_PATH
    ```
    
    `student_subscriber.cpp`
+
+   代码放在beginner_tutorials/src目录下
    
    ```c++
    /**
@@ -387,7 +463,7 @@ $echo $ROS_PACKAGE_PATH
    }
    ```
 
-Add following lines to the bottom of the CMakeLists.txt:
+Add following lines to the bottom of the beginner_tutorials/CMakeLists.txt:
 
 ```
 add_executable(student_subscriber src/student_subscriber.cpp)
@@ -398,22 +474,30 @@ target_link_libraries(student_publisher ${catkin_LIBRARIES})
 add_dependencies(student_publisher beginner_tutorials_generate_messages_cpp)
 ```
 
+然后编译！！！
+```
+cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
+```
+
+
 **Step 1.** Start the ROS master
 
 ```
-$roscore
+roscore
 ```
 
 **Step 2.** Running the Publisher
 
 ```
-$rosrun beginner_tutorials student_publisher
+rosrun beginner_tutorials student_publisher
 ```
 
 **Step 3.** Running the Subscriber
 
 ```
-$rosrun beginner_tutorials student_subscriber
+rosrun beginner_tutorials student_subscriber
 ```
 
 <img src="./imgs/04.png" alt="4" style="zoom:80%;" />
@@ -432,11 +516,13 @@ $rosrun beginner_tutorials student_subscriber
    **Step 4.** When a request arrives, the handle function is called
 
 2. **Building server node**
+    
+    文件，位置，src，懂？
 
    `server.py`
    
    ```python
-   #!/usr/bin/python3.8
+   #!/usr/bin/python3
    # -*- coding: utf-8 -*-
    # 该例程将提供print_string服务，std_srvs::SetBool
    
@@ -461,8 +547,8 @@ $rosrun beginner_tutorials student_subscriber
    ```
    
    ```
-   $rossrv show std_srvs/SetBool
-   $chmod +x server.py
+   rossrv show std_srvs/SetBool
+   chmod +x server.py
    ```
 
 **Writing a Simple Client**
@@ -479,7 +565,7 @@ $rosrun beginner_tutorials student_subscriber
    `client.py`
    
    ```python
-   #!/usr/bin/python3.8
+   #!/usr/bin/python3
    # -*- coding: utf-8 -*-
    
    import sys
@@ -503,26 +589,30 @@ $rosrun beginner_tutorials student_subscriber
    ```
    
    ```
-   $chmod +x client.py
+   chmod +x client.py
    ```
+
+python不需要编译！python天下第一！
 
 **Step 1.** Start the ROS master
 
 ```
-$roscore
+roscore
 ```
 
 **Step 2.** Running server
 
 ```
-$rosrun beginner_tutorials server.py
+rosrun beginner_tutorials server.py
 ```
 
 **Step 3.** Running client
 
 ```
-$rosrun beginner_tutorials client.py
+rosrun beginner_tutorials client.py
 ```
+
+
 
 <img src="./imgs/06.png" alt="6" style="zoom:80%;" />
 
@@ -531,11 +621,20 @@ $rosrun beginner_tutorials client.py
 ## 9. ROS srv
 
 1. **Define a srv file**
+   
+   ```
+   roscd beginner_tutorials/
+   mkdir srv
+   cd srv
+   ```
+   然后你们猜猜下面的srv文件应该放在哪里？
+   我猜在msg文件夹里！
 
    `StuScore.srv`
 
    ```yaml
    string id
+   ---
    string name
    string id
    uint8 grade
@@ -548,100 +647,117 @@ $rosrun beginner_tutorials client.py
 
 2. **Add package dependencies in package.xml**
 
+   有印象吗？这个部分之前添加过了
+
    ```
    <build_depend>message_generation</build_depend>
    <exec_depend>message_runtime</exec_depend>
    ```
 
 3. **Add build options in cmakelists.txt**
-
-   find_package(... message_generation)
+   ```
+   # 这句放在文件末，但我想问问有没有眼熟的感觉
+   find_package(message_generation)
+   #57行，替换，懂？
    add_service_files(FILES StuScore.srv)
+   #这句好像已经在cmakelists里面了，自己找有没有，没有就手动加进去
    generate_messages(DEPENDENCIES std_msgs)
-   catkin_package(... message_runtime)
-
+   ```
 4. **Building srv**
 
    ```
-   $cd ~/catkin_ws
-   $catkin_make
-   $source devel/setup.bash
+   cd ~/catkin_ws
+   catkin_make
+   source devel/setup.bash
    ```
 
 5. **Checking srv**
 
    ```
-   $rossrv show beginner_tutorials/StuScore
+   rossrv show beginner_tutorials/StuScore
    ```
 
 6. **Using srv**
+  放在beginner_tutorials/src/下，谢谢合作
 
    `student_server.py`
 
    ```python
-   import rospy
-   # from  beginner_tutorials.srv import StuScore, StuScoreResponse
-   from  beginner_tutorials.srv import *
-   def studentCallback(req):
-       # Display request data
-       rospy.loginfo("the student id:%s ", req.id)
-   
-   
-       # Feedback data
-       return StuScoreResponse("Jimmy", "12345678",StuScoreResponse.junior,95.8)
-   
-   def student_server():
-       # Initialize the ROS nodes
-       rospy.init_node('student_server')
-   
-       # Create a server named /show_student and
-       # register the callback function studentCallback
-       s = rospy.Service('/student_score', StuScore, studentCallback)
-   
-       # Enter the event loop and
-       # wait for the callback function studentCallback
-       print("Ready to response student's score.")
-       rospy.spin()
-   
-   if __name__ == "__main__":
-       student_server()
+    #!/usr/bin/python3
+    # -*- coding: utf-8 -*-
+    import rospy
+
+    from beginner_tutorials.srv import *
+
+    def studentCallback(req):
+        # Display request data
+        rospy.loginfo("the student id:%s ", req.id)
+
+
+        # Feedback data
+        return StuScoreResponse("Jimmy", "12345678",StuScoreResponse.junior,95.8)
+
+    def student_server():
+        # Initialize the ROS nodes
+        rospy.init_node('student_server')
+
+        # Create a server named /show_student and
+        # register the callback function studentCallback
+        s = rospy.Service('/student_score', StuScore, studentCallback)
+
+        # Enter the event loop and
+        # wait for the callback function studentCallback
+        print("Ready to response student's score.")
+        rospy.spin()
+
+    if __name__ == "__main__":
+        student_server()
+   ```
+给文件添加运行权限
+  ```
+   chmod +x student_server.py
    ```
 
    `student_client.py`
 
    ```python
-   import sys
-   import rospy
-   from  beginner_tutorials.srv import *
-   def student_client():
-       # Initialize the ROS nodes
-       rospy.init_node('student_client')
-   
-       # Wait for the /student_score service to start
-       rospy.wait_for_service('/student_score')
-       try:
-           # Create a service client, and connect to the service named /student_score
-           student_client = rospy.ServiceProxy('/student_score', StuScore)
-   
-           # Request service , input request data
-           response = student_client("12345678")
-           return response
-       except rospy.ServiceException as e:
-           print("Service call failed: %s"%e)
-   
-   if __name__ == "__main__":
-       #The service is invoked and the result is displayed
-       print("Show Student's score:\n%s" %(student_client()))
-   ```
+    #!/usr/bin/python3
+    # -*- coding: utf-8 -*-
+    import sys
+    import rospy
+    from  beginner_tutorials.srv import *
+    def student_client():
+        # Initialize the ROS nodes
+        rospy.init_node('student_client')
 
-**Building node**
+        # Wait for the /student_score service to start
+        rospy.wait_for_service('/student_score')
+        try:
+        # Create a service client, and connect to the service named /student_score
+        student_client = rospy.ServiceProxy('/student_score', StuScore)
+
+        # Request service , input request data
+        response = student_client("12345678")
+        return response
+        except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+    if __name__ == "__main__":
+        #The service is invoked and the result is displayed
+        print("Show Student's score:\n%s" %(student_client()))
+   ```
+   
+给文件添加运行权限
+  ```
+   chmod +x student_client.py
+   ```
 
 **Running**
 
 ```
-$roscore
-$rosrun beginner_tutorials student_server.py
-$rosrun beginner_tutorials student_client.py
+roscore
+rosrun beginner_tutorials student_server.py
+rosrun beginner_tutorials student_client.py
 ```
 
 <img src="./imgs/08.png" alt="8" style="zoom:80%;" />
@@ -676,14 +792,18 @@ A ROS parameter has a name, and a data type. Among the most common types, you ca
 1. **Prerequisites**
 
    ```
-   $cd ~/catkin_ws/src
-   $catkin_create_pkg learning_parameter rospy roscpp std_msgs geometry_msgs turtlesim
+   cd ~/catkin_ws/src
+   catkin_create_pkg learning_parameter rospy roscpp std_msgs geometry_msgs turtlesim
    ```
 
 2. **Writing a parameter config node**
 
+    代码放在learning_parameter/src下
+
+    `parameter_config.py`
+
    ```python
-   #!/usr/bin/python3.8
+   #!/usr/bin/python3
    # -*- coding: utf-8 -*-
    # This routine sets/reads the parameters in the turtle routine
    
@@ -732,16 +852,22 @@ A ROS parameter has a name, and a data type. Among the most common types, you ca
    if __name__ == "__main__":
        parameter_config()
    ```
+给文件添加运行权限
+  ```
+   chmod +x parameter_config.py
+   ```
+
+
 
 2. **Building and Running**
 
    ```
-   $cd ~/catkin_ws
-   $catkin_make
-   $source devel/setup.bash
-   $roscore
-   $rosrun turtlesim turtlesim_node
-   $rosrun learning_parameter parameter_config.py
+   cd ~/catkin_ws
+   catkin_make
+   source devel/setup.bash
+   roscore
+   rosrun turtlesim turtlesim_node
+   rosrun learning_parameter parameter_config.py
    ```
 
    <img src="./imgs/10.png" alt="10" style="zoom:80%;" />
@@ -757,7 +883,7 @@ The launch file USES an XML file to configure and launch multiple nodes
 **roslaunch command-line tool**
 
 ```
-$roslaunch [package] [filename.launch]
+roslaunch [package] [filename.launch]
 ```
 
 **The syntax of the launch file**
@@ -769,16 +895,19 @@ launch, node, param, rosparam, remap, include, arg, group.
 **Step 1.** Prerequisites
 
 ```
-$cd ~/catkin_ws/src
-$catkin_create_pkg learning_launch rospy roscpp std_msgs
+cd ~/catkin_ws/src
+catkin_create_pkg learning_launch rospy roscpp std_msgs
 ```
 
 **Step 2.** Writing publisher
 
+....怎么说呢.....自己研究文件放哪
+
+
 `velocity_publisher.py`
 
 ```python
-#!/usr/bin/python3.8
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # This routine will publish the turtle1/cmd_vel topic, message type is geometry_msgs::Twist
 
@@ -817,13 +946,14 @@ if __name__ == '__main__':
     except rospy.ROSInterruptException:
         pass
 ```
+自行修改执行权限，谢谢
 
 **Step 3.** Writing subscriber
 
 `pose_subscriber.py`
 
 ```python
-#!/usr/bin/python3.8
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # The routine will subscribe to/turtle1/pose topic, message type is sturtlesim::Pose
 
@@ -850,7 +980,17 @@ if __name__ == '__main__':
     pose_subscriber()
 ```
 
+自行修改执行权限，谢谢
+
 **Step 4.** Writing `turtlesim_parameter_config.launch` & `param.yaml`
+
+创建launch文件夹并把launch文件丢进去
+```
+cd ~/catkin_ws/src/learning_launch
+mkdir launch
+cd launch
+```
+
 
 `turtlesim_parameter_config.launch`
 
@@ -865,6 +1005,12 @@ if __name__ == '__main__':
     <node pkg="turtlesim" type="turtlesim_node" name="turtle1" output="screen" />
 </launch>
 ```
+创建config文件夹并把yaml文件丢进去
+```
+cd ~/catkin_ws/src/learning_launch
+mkdir config
+cd config
+```
 
 `param.yaml`
 
@@ -877,16 +1023,16 @@ group:
 **Step 5.** Building
 
 ```
-$cd ~/catkin_ws
-$catkin_make
-$source devel/setup.bash
+cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
 ```
 
 **Step 6.** Run launch file using roslaunch
 
 ```
-$roslaunch learning_launch turtlesim_parameter_config.launch
-$ros_graph
+roslaunch learning_launch turtlesim_parameter_config.launch
+ros_graph
 ```
 
 <img src="./imgs/12.gif" alt="12" style="zoom:80%;" />
@@ -912,9 +1058,20 @@ $ros_graph
 **Step 2.** Run launch file using roslaunch
 
 ```
-$roslaunch learning_launch turtlesim_remap_include.launch
+roslaunch learning_launch turtlesim_remap_include.launch
 ```
+这部分启动后，会出现一个海龟转圈，另一个海龟则是键盘控制的，可以选中终端通过方向键进行控制
 
 **Step 3.** Result
 
 <img src="./imgs/13.gif" alt="13" style="zoom:80%;" />
+
+## 12. 更新日志
+
+2023/2/21
+```
+优化掉意义不明的$符号
+优化了原先lab代码与功能目标不一致的bug
+添加了教程细节，现在教程应该更加简单了
+优化了助教的肝，助教已经没有肝了
+```
