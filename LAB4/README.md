@@ -326,7 +326,11 @@ roslaunch usb_cam usb_cam-test.launch
 Camera calibration is necessary if you are measuring distance from images acquired with a stereo camera or processing images for object recognition.
 
 - Prepare a Chessboard for calibration
-
+  
+- 自己打印
+- 
+  ![camera-calibration](imgs/cal_img.png)
+- 
   ```
   #ubuntu18
   rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/image_raw camera:=/camera
@@ -336,6 +340,11 @@ Camera calibration is necessary if you are measuring distance from images acquir
   ```
 
   ![camera-calibration](imgs/part4_camera-calibration.png)
+
+（此处该有标定教程）
+
+https://blog.csdn.net/Will_Ye/article/details/125064472
+
 
   ```
   cd /tmp 
@@ -413,3 +422,6 @@ Kinect is an XBOX game device which contains a camera and an infrared depth came
   - http://wiki.ros.org/Robots/TurtleBot 
 - TurtleBot3 
   - http://emanual.robotis.com/docs/en/platform/turtlebot3
+
+- 标定教程参考
+  - https://blog.csdn.net/Will_Ye/article/details/125064472
