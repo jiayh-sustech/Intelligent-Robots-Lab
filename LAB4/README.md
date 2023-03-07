@@ -328,7 +328,11 @@ Camera calibration is necessary if you are measuring distance from images acquir
 - Prepare a Chessboard for calibration
 
   ```
+  #ubuntu18
   rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/image_raw camera:=/camera
+  
+  #ubuntu20
+  rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/usb_cam/image_raw camera:=/usb_cam
   ```
 
   ![camera-calibration](imgs/part4_camera-calibration.png)
