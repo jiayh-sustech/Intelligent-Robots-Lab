@@ -286,27 +286,41 @@ ROS can run on multiple machines trough network
 
 ## Part 4: Robot Sensor
 
-**Camera**
+### Camera
 
 这部分教学如何通过将相机图像传至ros，详情参考lab3部分
 
-- The camera corresponds to the eye in the robot. The images obtained from the camera are very useful for recognizing the environment around the robot
+### 打开相机并查看图像
+*Remenber change setting usb to usb3.1 and open camera if you use VMWare*
 
-  ```
-  sudo apt-get install ros-noetic-uvc-camera
-  sudo apt-get install ros-noetic-image-* 
-  sudo apt-get install ros-noetic-rqt-image-view 
-  roscore 
-  rosrun uvc_camera uvc_camera_node 
-  rostopic list 
-  rosrun image_view image_view image:=/image_raw
-  ```
+For ubuntu 18.04:
 
-  ![camera](imgs/part4_camera.png)
+```bash
+sudo apt-get install ros-melodic-uvc-camera
+sudo apt-get install ros-melodic-image-*
+sudo apt-get install ros-melodic-rqt-image-view
+roscore
+rosrun uvc_camera uvc_camera_node
+rostopic list
+rqt_image_view
+```
 
+For ubuntu 20.04:
+```
+sudo apt-get install ros-noetic-camera-info-manager ros-noetic-image-view
+cd ~/catkin_ws/src
+git clone https://github.com/ros-drivers/usb_cam.git
+cd ..
+catkin_make
+source devel/setup.bash
+# open camera
+roslaunch usb_cam usb_cam-test.launch
+```
 
 
 **Camera Calibration**
+
+相机标定
 
 Camera calibration is necessary if you are measuring distance from images acquired with a stereo camera or processing images for object recognition.
 
@@ -331,6 +345,9 @@ Camera calibration is necessary if you are measuring distance from images acquir
 
 
 **Kinect**
+
+（下面部分仅供含有kinect设备的人参考，该设备常见于turtlebot3实车上，没有的人应该也许不需要跑下面的代码）
+
 
 Kinect is an XBOX game device which contains a camera and an infrared depth camera.
 
