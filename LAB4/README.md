@@ -165,19 +165,28 @@ Lab4 materials for the intelligent robotics course
 - New terminal, load gazebo
 
   ```java
+  #提前声明机器人模型，waffle的模型拥有相机和雷达两个传感器
   export TURTLEBOT3_MODEL=waffle
   //TURTLEBOT3_MODEL is the name of the model you are using in burger, waffle, waffle_pi
+  
+  #启动turtlebot3仿真，在这里如果没有提前声明模型而使用默认模型会发现没有相机图像
+  #这是因为默认模型支配只有雷达的传感器
   roslaunch turtlebot3_gazebo turtlebot3_world.launch
   ```
+  
+  使用vmware可能会出现模型是透明的，能看到背景的网格被模型遮挡，但却看不到模型
+  可能的解决方法是关闭vmware的3d图像加速
 
 - New terminal, load simulation 
 
+  这个命令是让turtlebot随机的/自动的在场地里无碰撞的行驶，这样能在后面进行传感器数据检查时看到不同的数据
   ```
   roslaunch turtlebot3_gazebo turtlebot3_simulation.launch
   ```
 
 - New terminal, load rviz
-
+  
+- 打开rviz，在rviz里查看相机传感器和雷达传感器的数据
   ```
   roslaunch turtlebot3_gazebo turtlebot3_gazebo_rviz.launch
   ```
@@ -186,8 +195,23 @@ Lab4 materials for the intelligent robotics course
   
   ![turtlebot-world1](imgs/part2_turtlebot3-world1.gif)
 
+- rviz的操作
+上面的命令会打开rviz界面
 
+![turtlebot-world1](imgs/img41.png)
 
+首先先在左边的控制栏找到laserscan，然后把它底下的size从0.01调整成0.1
+
+然后你就能看到在右边的雷达数据点就变大了
+
+恩，只是调整了个大小
+![turtlebot-world1](imgs/img42.png)
+
+这里需要添加相机图像，首先在rviz左下角点击add名然后在弹出的界面下点击by topic
+在其中选中/camera/rgb/image_raw中的image然后点确定就好了
+你会在rviz左边看到图像数据
+
+![turtlebot-world1](imgs/img43.png)
 **Gazebo example: TurtleBot3**
 
 - Learn more about Gazebo in link: http://gazebosim.org/tutorials

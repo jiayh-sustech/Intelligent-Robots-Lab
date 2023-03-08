@@ -1,8 +1,10 @@
-# LAB5 - 3D Modeling and Simulation
+# LAB5 - limo vehicle Simulation
 
 -- Course: *Intelligent Robotics – Professor: Qi Hao*
 
 -- Environment: Ubuntu 20.04, ros-noetic
+
+修订 孙耀威 12232434
 
 [TOC]
 
