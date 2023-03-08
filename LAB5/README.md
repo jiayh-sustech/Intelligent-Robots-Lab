@@ -167,7 +167,7 @@ Run the start file of limo and visualize the model in Rviz
 roslaunch limo_description display_models.launch 
 ```
 
-![img](image/rviz.png) 
+![img](./images/img3.png) 
 
 ## 3.	Start the gazebo simulation environment of limo and control limo movement in the gazebo
 
@@ -199,7 +199,7 @@ Start rqt_robot_steering movement control plug-in, the sliding bar can control t
 rosrun rqt_robot_steering rqt_robot_steering
 ```
 
-![img](image/limo_ackerman.png) 
+![img](./images/img1.png) 
 
 ### 控制方法2
 
@@ -216,7 +216,8 @@ Control by keyboard, the robot can be controlled to move forward, left, right an
 ```
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
 ```
+如果感觉转弯效果不明显，可以按e增加转弯控制的极限
+![img](./images/img2.png) 
 
-![img](image/limo_diff.png) 
 
  
