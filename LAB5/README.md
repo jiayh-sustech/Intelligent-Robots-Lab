@@ -188,9 +188,32 @@ source devel/setup.bash
 Start the simulation environment of limo, limo have two movement mode, the movement mode is Ackerman mode
 
 开启limo的gazebo环境仿真
+1. 打开空白的世界诶
+```
+#这条命令会打开一个空白的世界
+roslaunch limo_gazebo_sim limo_ackerman.launch
+```
+2. 打开含有地图的世界
+
+```
+roscd limo_gazebo_sim/
+cd launch
+gedit limo_ackerman.launch
+```
+可以看到 limo_ackerman.launch 文件，其中第五行有个world_name的参数,默认参数是empty.world
+
+可以选择的世界有两种
+```
+willowgarage.world
+clearpath_playpen.world
+```
+选择其一替换掉empty.world，然后再运行
 ```
 roslaunch limo_gazebo_sim limo_ackerman.launch
 ```
+这里因为修改了默认模型，所以会打开新的世界而不是空白的世界
+
+
 ### 控制方法1
 Start rqt_robot_steering movement control plug-in, the sliding bar can control the robot motion
 
