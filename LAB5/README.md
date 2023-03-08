@@ -213,6 +213,11 @@ roslaunch limo_gazebo_sim limo_ackerman.launch
 ```
 这里因为修改了默认模型，所以会打开新的世界而不是空白的世界
 
+下图为使用willowgarage.world的世界中rviz的图像与gazebo的图像
+
+![img](./images/img4.png) 
+
+![img](./images/img5.png) 
 
 ### 控制方法1
 Start rqt_robot_steering movement control plug-in, the sliding bar can control the robot motion
