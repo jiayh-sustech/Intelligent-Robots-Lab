@@ -217,6 +217,8 @@ Control by keyboard, the robot can be controlled to move forward, left, right an
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
 ```
 如果感觉转弯效果不明显，可以按e增加转弯控制的极限
+
+比如原来按转弯前轮只转10度，按了后就变成11度，再按就变12.1度，转弯会逐渐变明显
 ![img](./images/img2.png) 
 
 
