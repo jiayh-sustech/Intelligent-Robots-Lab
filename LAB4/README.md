@@ -176,6 +176,7 @@ Lab4 materials for the intelligent robotics course
   
   使用vmware可能会出现模型是透明的，能看到背景的网格被模型遮挡，但却看不到模型
   可能的解决方法是关闭vmware的3d图像加速
+- 解决方法：https://blog.csdn.net/chenguangbiao/article/details/120200226#:~:text=%E7%82%B9%E5%87%BB%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8C%E7%82%B9%E8%87%B3%E6%9C%80%E4%B8%8B%E6%96%B9%E7%9A%84%E8%AE%BE%E7%BD%AE%203.%E7%82%B9%E5%87%BB%E6%98%BE%E7%A4%BA%E5%99%A8%EF%BC%8C,%E5%B0%86%E5%8F%B3%E4%B8%8A%E8%A7%92%E7%9A%84%E5%8A%A0%E9%80%9F3D%E5%9B%BE%E5%83%8F%E7%9A%84%E5%8B%BE%E5%8F%96%E6%B6%88%EF%BC%8C%E7%82%B9%E5%87%BB%E7%A1%AE%E5%AE%9A%E3%80%82%204.%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%8E
 
 - New terminal, load simulation 
 
