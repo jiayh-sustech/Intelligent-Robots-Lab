@@ -370,7 +370,7 @@ Camera calibration is necessary if you are measuring distance from images acquir
 
 https://blog.csdn.net/Will_Ye/article/details/125064472
 
-
+ubuntu18
   ```
   cd /tmp 
   tar -xvzf calibrationdata.tar.gz 
@@ -380,6 +380,8 @@ https://blog.csdn.net/Will_Ye/article/details/125064472
   mv camera.yaml ~/.ros/camera_info/ 
   rosrun uvc_camera uvc_camera_node
   ```
+
+ubuntu20直接跟着链接的教程修改launch文件，在里面添加标定文件并成功重运行就好
 
 
 
