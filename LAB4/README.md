@@ -248,6 +248,8 @@ sudo ntpdate ntp.ubuntu.com
 
 - Install ssh on both computers 
 
+  建议在ssh之前先两台机器互相ping以下检查是否通信正常
+
   ```
   sudo apt-get install openssh-server
   ```
@@ -279,6 +281,7 @@ ROS can run on multiple machines trough network
   echo "export ROS_MASTER_URI=http://IP_OF_TURTLEBOT:11311" >> ~/.bashrc 
   echo "export ROS_HOSTNAME=IP_OF_PC" >> ~/.bashrc
   ```
+在设置完参数后理论上就能进行ros通信了
 
 - You can also write in ~/.bashrc by editor directly
 
@@ -287,17 +290,23 @@ ROS can run on multiple machines trough network
 **Control your turtlebot**
 
 - In turtlebot (or ssh to turtlebot): 
-
+  
   ```
   roslaunch turtlebot_bringup minimal.launch
   ```
-
+  
 - In remote PC: 
-
+  
   ```
   roslaunch turtlebot_teleop keyboard_teleop.launch
   ```
+如果这两条命令无法运行的花，可以把之前的lab里控制小海龟的部分复现在这里
 
+在远程机器上打开小海龟
+
+在本地机器上运行键盘控制
+
+加油！这部分我就不放教程了，自行翻之前的lab
 
 
 **Which method to use depends:** 
@@ -358,10 +367,10 @@ Camera calibration is necessary if you are measuring distance from images acquir
 - 
   ```
   #ubuntu18
-  rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/image_raw camera:=/camera
+  rosrun camera_calibration cameracalibrator.py --size 6x4 --square 0.024 image:=/image_raw camera:=/camera
   
   #ubuntu20
-  rosrun camera_calibration cameracalibrator.py --size 7x5 --square 0.024 image:=/usb_cam/image_raw camera:=/usb_cam
+  rosrun camera_calibration cameracalibrator.py --size 6x4 --square 0.024 image:=/usb_cam/image_raw camera:=/usb_cam
   ```
 
   ![camera-calibration](imgs/part4_camera-calibration.png)
