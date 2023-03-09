@@ -196,7 +196,7 @@ roslaunch limo_gazebo_sim limo_ackerman.launch
 2. 打开含有地图的世界
 
 ```
-roscd limo_gazebo_sim/
+roscd limo_gazebo_sim
 cd launch
 gedit limo_ackerman.launch
 ```
