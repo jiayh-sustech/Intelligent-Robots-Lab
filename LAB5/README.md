@@ -249,5 +249,81 @@ rosrun teleop_twist_keyboard teleop_twist_keyboard.py
 比如原来按转弯前轮只转10度，按了后就变成11度，再按就变12.1度，转弯会逐渐变明显
 ![img](./images/img2.png) 
 
+## Demo of line detection and controlling
 
- 
+The code is transformed from [turtlebot3 2020 autorace](https://github.com/ROBOTIS-GIT/turtlebot3_autorace_2020).
+
+During the difference between robot models, the controlling performance is worse in limo.
+
+This demo is only an example pipline with only controlling according the line.
+
+### 1. open the world
+
+Add the race world file to gazebo world
+```bash
+echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/limo_ws/src/ugv_gazebo_sim/limo/models" >> ~/.bashrc
+source ~/.bashrc
+```
+Open the world in gazebo:
+
+```bash
+roslaunch limo_gazebo_sim limo_demo.launch
+```
+
+![world](./images/img6.png)
+
+### 2. extrinsic camera calibration
+
+The image need to be project to ground as input of line detection.
+
+```bash
+roslaunch limo_camera extrinsic_camera_calibration.launch
+```
+
+The projected picture is publish to */camera/image_projected_compensated*
+You also can config parameters as follow.
+
+```bash
+roslaunch limo_camera extrinsic_camera_calibration.launch mode:=calibration
+rqt
+rosrun rqt_reconfigure rqt_reconfigure
+```
+
+![config extrinsic](./images/img7.png)
+
+Use *plugin - Visulization - Image view* to check topic */camera/image_extrinsic_calib/compressed* and topic */camera/image_projected_compensated*.
+You need to guarantee the view contain both lines are in */camera/image_projected_compensated*.
+
+![rqt_reconfig1](./images/img8.png)
+
+After adjust the parameter, please change yaml file under *ugv_gazebo/limo/limo_camera/calibration/extrinsic_calibration*
+
+### 3. line detection
+
+After projected image to ground, we need to detect the yellow line (left) and the wite line (right).
+
+ ```bash
+ roslaunch limo_detect detect_lane.launch
+ ```
+
+ The result is published in */detect/image_lane/compressed*
+
+ ![detect result](./images/img9.png)
+
+ You can also adjuest parameters as extrinsic camera calibration
+
+ ```bash
+ roslaunch limo_detect detect_lane.launch mode:=calibration
+ rosrun rqt_reconfigure rqt_reconfigure
+ ```
+![rqt_reconfig2](./images/img10.png)
+
+### 4. controlling 
+
+The controlling part is ordered to minimize the error between current direction and planed direction, and publish to */cmd_vel* .
+
+```bash
+roslaunch limo_driving turtlebot3_autorace_control_lane.launch
+```
+
+Because there are blind spot at front, it can't follow the path.
