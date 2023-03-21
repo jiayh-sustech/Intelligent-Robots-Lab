@@ -125,7 +125,7 @@ catkin_init_workspace
  Download simulation model function package
 
 ```
-git clone https://github.com/agilexrobotics/ugv_sim.git
+git clone https://github.com/Intelligent-Robot-Course/ugv_sim.git
 ```
 
  Enter the limo_ws folder
