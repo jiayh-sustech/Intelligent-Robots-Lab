@@ -3,12 +3,14 @@
 # LIMO 实车使用教程
 
 修改 ：12232434 孙耀威
-## 课程目标
+## 课程目标 task
 1. 将limo小车开机
 2. 使用遥控器控制四轮差速与阿克曼模式下的limo小车
 3. 通过ros通信/python代码控制limo小车前后左右移动
 4. 实现limo小车的gmapping建图
 5. 在rviz中显示摄像头，雷达，深度相机数据
+
+
 
 ## 一、LIMO产品简介
 
@@ -160,13 +162,13 @@
 
 该车还具有手机app遥控控制方法，具体参考产品文档
 
-### 1.9 远程桌面连接
+### 1.6 远程桌面连接
 
-#### 1.9.1 下载安装NoMachine
+#### 1.6.1 下载安装NoMachine
 
 首先在个人电脑下载相应的软件，下载链接：https://www.nomachine.com/download，根据自己电脑的操作系统和架构下载相应的版本。让limo和电脑连接到同一个WIFI下。                         
 
-#### 1.9.2 连接wifi
+#### 1.6.2 连接wifi
 
 打开limo右侧的海鸥门，找到USB-HUB模块，给limo连接上键盘鼠标，USB-HUB模块的位置如下图：
 
@@ -182,7 +184,7 @@
 
 
 
-#### 1.9.2 远程连接limo
+#### 1.6.2 远程连接limo
 
 选择连接对象
 
@@ -411,9 +413,9 @@ python3 limomove.py
 
 
 
-## 五、雷达建图
+## 四、雷达建图
 
-### 5.1 雷达介绍和使用
+### 4.1 雷达介绍和使用
 
 
 打开一个新的终端，在终端中输入命令：
@@ -438,13 +440,13 @@ roslaunch limo_bringup lidar_rviz.launch
 
 这时候可以把遥控器/App调为遥控模式，遥控小车进行移动，这时会看到激光的数据也会跟着变化。
 
-### 5.2 gmapping 建图
+### 4.2 gmapping 建图
 
-#### 5.2.1 gmapping建图算法介绍
+#### 4.2.1 gmapping建图算法介绍
 
 Gmapping是基于滤波SLAM框架的常用开源SLAM算法。Gmapping有效利用了车轮里程计信息，对激光雷达的频率要求不高，在构建小场景地图时，所需的计算量较小且精度较高。这里通过使用ROS封装了的GMapping功能包来实现limo的建图。
 
-#### 5.2.2 gmapping建图实践操作
+#### 4.2.2 gmapping建图实践操作
 
 注：在运行命令之前，请确保其他终端中的程序已经终止，终止命令为：Ctrl+c
 
@@ -484,13 +486,13 @@ rosrun map_server map_saver –f map1
 
 注：map1为保存地图的名称，保存地图时应避免地图的名称重复
 
-### 5.3 cartographer建图
+### 4.3 cartographer建图
 
-#### 5.3.1 cartographer建图算法介绍
+#### 4.3.1 cartographer建图算法介绍
 
 cartographer是google推出的一套基于图优化的SLAM算法。该算法的主要目标是实现低计算资源消耗，达到实时SLAM的目的。该算法主要分为两个部分，第一个部分称为Local SLAM, 该部分通过一帧帧的Laser Scan建立并维护一系列的Submap，而所谓的submap就是一系列的Grid Map。算法的第二个部分，称为Global SLAM的部分，就是通过Loop Closure来进行闭环检测，来消除累积误差：当一个submap构建完成，也就是不会再有新的laser scan插入到该submap时，算法会将该submap加入到闭环检测中。
 
-#### 5.3.2 cartographer建图实践操作
+#### 4.3.2 cartographer建图实践操作
 
 注：在运行命令之前，请确保其他终端中的程序已经终止，终止命令为：Ctrl+c
 
@@ -538,11 +540,11 @@ rosrun cartographer_ros cartographer_pbstream_to_ros_map -map_filestem=${HOME}/a
 
 ![](./LIMO_image/carto_2.png)
 
-##  六、雷达导航
+##  五、雷达导航
 
 前面我们使用了两种激光建图方式，接下来利用刚刚构建地图进行导航。
 
-### 6.1 导航框架
+### 5.1 导航框架
 
 导航的关键是机器人定位和路径规划两大部分。针对这两个核心,ROS提供了以下两个功能包。
 
@@ -578,7 +580,7 @@ TEB_planner
 
 “TEB”全称Time Elastic Band（时间弹性带）Local Planner，该方法针对全局路径规划器生成的初始轨迹进行后续修正(modification)，从而优化机器人的运动轨迹，属于局部路径规划。在轨迹优化过程中，该算法拥有多种优化目标，包括但不限于：整体路径长度、轨迹运行时间、与障碍物的距离、通过中间路径点以及机器人动力学、运动学以及几何约束的符合性。“TEB方法”明确考虑了运动状态下时空方面的动态约束，如机器人的速度和加速度是有限制的。
 
-### 6.2 limo导航功能
+### 5.2 limo导航功能
 
 注：四轮差速模式和全向轮模式、履带模式下，导航运行的文件一样
 
@@ -626,7 +628,7 @@ roslaunch limo_bringup limo_navigation_ackerman.launch
 
 ![](./LIMO_image/navi_5.png)
 
-###  6.3 limo路径巡检
+###  5.3 limo路径巡检
 
 （1）首先启动雷达，开启一个新的终端，在终端中输入命令：
 
@@ -664,11 +666,11 @@ roslaunch agilex_pure_pursuit pure_pursuit.launch
 
 
 
-##  七、深度相机+雷达建图
+##  六、深度相机+雷达建图
 
 limo拥有两个版本，一个版本搭配RealSense D435，另一个版本搭配ORBBEC®Dabai，两个深度相机都可以实现视觉+雷达的建图导航功能。下面将介绍两个款深度相机的使用方法。
 
-### 7.1 ORBBEC®Dabai的介绍与使用
+### 6.1 ORBBEC®Dabai的介绍与使用
 
 ORBBEC®Dabai 是基于双目结构光 3D 成像技术的深度相机，主要包括左红外相机(IR camera1)、右红外相机(IR camera2)、一个红外投影仪(IR projector)以及深度计算处理器(depth processor)。红外投影仪用于向目标场景(Scene)投射结构光图案(散斑图案)，左红外相机以及或红外相机分别采集目标的左红外结构光图像以及右红外结构光图像，深度计算处理器接收左红外结构光图像、右红外结构光图像后执行深度计算算法并输出目标场景的深度图像。
 
@@ -706,7 +708,7 @@ roslaunch astra_camera dabai_u3.launch
 
 ![](./LIMO_image/dabai.png)
 
-### 7.2 realsense的介绍与使用
+### 6.2 realsense的介绍与使用
 
 双目视觉传感器，在机器人视觉测量、视觉导航等机器人行业方向中均有大范围的应用场景和需求，目前我们甄选了了在科研教育行业常见的视觉传感器。英特尔实感深度摄像头 D435 配备全局图像快门和宽视野，能够有效地捕获和串流移动物体的深度数据，从而为移动原型提供高度准确的深度感知。
 
@@ -742,7 +744,7 @@ roslaunch realsense2_camera rs_camera.launch
 
 ![](./LIMO_image/realsense.png)
 
-### 7.3 查看深度相机信息
+### 6.3 查看深度相机信息
 
 成功打开深度相机之后，接下来启动rviz，查看深度相机所拍摄到的图像和采集的深度信息。
 
@@ -782,11 +784,11 @@ fixed frame选择camera_link, DepthCloud组件选择对应的话题
 
 ![](./LIMO_image/rviz_8.png)
 
-### 7.2 rtabmap算法介绍
+### 6.4 rtabmap算法介绍
 
 rtabmap算法提供一个与时间和尺度无关的基于外观的定位与构图解决方案。针对解决大型环境中的在线闭环检测问题。方案的思想在于为了满足实时性的一些限制，闭环检测是仅仅利用有限数量的一些定位点，同时在需要的时候又能够访问到整个地图的定位点。
 
-### 7.3 rtabmap算法建图
+### 6.5 rtabmap算法建图
 
 注：在运行命令之前，请确保其他终端中的程序已经终止，终止命令为：Ctrl+c
 
@@ -834,7 +836,7 @@ roslaunch limo_bringup limo_rtabmap_orbbec.launch
 
 当构建完地图之后，可以直接终止程序，构建的地图将自动保存在主目录下的.ros文件中，文件名称为rtabmap.db。.ros文件夹为隐藏文件夹，需要通过Ctrl+h指令显示出来。
 
-### 7.4 rtabmap算法导航
+### 6.6 rtabmap算法导航
 
 注：在运行命令之前，请确保其他终端中的程序已经终止，终止命令为：Ctrl+c
 
@@ -896,16 +898,16 @@ roslaunch limo_bringup limo_navigation_rtabmap_ackerman.launch
 
  
 
-## 八、 视觉模块
+## 七、 视觉模块
 
 
-### 8.2 识别红绿灯
+### 7.1 识别红绿灯
 
-#### 8.2.1 功能简介
+#### 7.1.1 功能简介
 
 通过darknet_ros进行红绿灯目标检测之后，要对红绿灯进行灯色识别并进行在三维空间中的定位，生成物体相对与摄像机的位置关系。该方式只能实现对红绿灯的识别和定位，无法获得红绿灯姿态。需要使用深度摄像机，其识别距离取决于深度摄像头范围。
 
-#### 8.1.2 运行功能
+#### 7.1.2 运行功能
 
 注：在运行命令之前，请确保其他终端中的程序已经终止，终止命令为：Ctrl+c
 
