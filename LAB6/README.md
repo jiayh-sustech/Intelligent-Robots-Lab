@@ -8,6 +8,7 @@
 2. 使用遥控器控制四轮差速与阿克曼模式下的limo小车
 3. 通过ros通信/python代码控制limo小车前后左右移动
 4. 实现limo小车的gmapping建图
+5. 在rviz中显示摄像头，雷达，深度相机数据
 
 ## 一、LIMO产品简介
 
@@ -933,90 +934,3 @@ roslaunch limo_bringup limo_navigation_rtabmap_ackerman.launch
 ```
 
 ![](./LIMO_image/traffic_light.png)
-
- 	
-
-## 附录
-
-### 附录1、三视图
-
-<img src="LIMO_image/三视尺寸-正视.svg"  width="800"  height = "600" />
-
-<img src="LIMO_image/三视尺寸-侧视.svg"  width="800"  height = "600" />
-
-<img src="LIMO_image/三视尺寸-俯视.svg"  width="800"  height = "600" />
-
-
-
-### 附录2、基本操作命令
-
-#### 2.1 目录操作命令
-
-##### (1) 目录切换 cd
-
-① cd /     切换到根目录
-
-② cd /usr     切换到根目录下的usr目录
-
-③ cd ../     切换到上一级目录 或者  cd ..
-
-④ cd ~     切换到home目录
-
-⑤ cd -     切换到上次访问的目录
-
-##### (2) 目录查看 ls
-
-① ls     查看当前目录下的所有目录和文件
-
-② ls -a    查看当前目录下的所有目录和文件（包括隐藏的文件）
-
-③ ls -l或ll  列表查看当前目录下的所有目录和文件（列表查看，显示更多信息）
-
-④ ls /dir   查看指定目录下的所有目录和文件如：ls /usr
-
-##### (3) 创建目录 mkdir
-
-① mkdir aaa 在当前目录下创建一个名为aaa的目录
-
-② mkdir /usr/aa 在指定目录下创建一个名为aaa的目录
-
-##### (4) 显示隐藏目录 Ctrl+h
-
-在文件夹中，通过 Ctrl+h可以显示文件夹中的隐藏文件夹
-
-##### (5) 终止程序 Ctrl+c
-
-在终端中输入命令 Ctrl+c ，强制终止正在执行的程序
-
-#### 2.2 ROS常用命令
-
-##### （1）编译命令 catkin_make
-
-​	用于编译整个工作空间中的功能包
-
-##### （2）初始化工作空间  catkin_init_workspace
-
-​	在初次创建工作空间时，用于初始化工作空间
-
-##### （3）创建功能包 catkin_create_pkg
-
-​	用于创建一个功能包，其语法为：
-
-```
- catkin_create_pkg <package_name> [depend1] [depend2] [depend3]...
-```
-
-##### （4）节点运行命令
-
-​	① rosrun	用于运行.cpp文件和.py文件，其语法为：
-
-```
-	rosrun package_name node_name
-```
-
-​	②  roslaunch	用于运行.launch文件，在launch文件中可以同时调用.cpp文件和.py文件，其语法为：
-
-```
-	roslaunch package_name node_name
-```
-
