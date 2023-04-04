@@ -187,7 +187,7 @@ for i in range(samples_view):   # Python for循环可以遍历任何序列的项
 
 ### smartcar explore maze
 
-**这一部分仅提供原先代码，但本质与上个相同，请根据上述引导进行对应代码更改，并且正确运行**
+**这一部分仅提供原先代码，但本质与上个相同，请根据上述引导进行对应代码更改，并且正确运行(包括roslaunch开启gazebo的命令)**
 
 ```
 $cd ~/smartcar_ws/src/smartcar_demo/scripts
