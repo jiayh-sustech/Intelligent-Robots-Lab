@@ -130,8 +130,15 @@ scan = rospy.wait_for_message('/limo/scan', LaserScan)   #从‘/limo/scan’ �
 
 1. In terminal
 
+Turtlebot3 对应仿真环境：
+
+```
+$roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+```
+
 **在此需要对仿真环境进行改变**
 
+需要开启Limo对应的仿真环境，因此上条命令需要更改为limo对应指令。
 在此算法中，模型为差速轮，因此在**ugv_gazebo_sim/limo/limo_gazebo_sim/launch/limo_four_diff.launch**基础上进行修改。
 在该launch文件中，默认世界为空白世界，无障碍物，无法对算法进行测试。因此还需要更改其地图。
 再地图素材中*willowgarage.world*较为贴合，可如下更改*world_name*。
