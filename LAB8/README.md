@@ -4,220 +4,115 @@
 
 <img src="README.assets/image-20220806110718629.png" alt="image-20220806110718629" style="zoom:50%;" />
 
-## Gmapping
-
-### **Gmapping for turtlebot3**
-
-- Terminal 1
-
-  ```shell
-  $export TURTLEBOT3_MODEL=burger # TURTLEBOT3_MODEL有burger, waffle或waffle_pi三种
-  $roslaunch turtlebot3_gazebo turtlebot3_world.launch
-  ```
-
-- Terminal 2
-
-  ```shell
-  $export TURTLEBOT3_MODEL=burger
-  $roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
-  ```
-
-- Terminal 3
-
-  ```shell
-  $roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
-  ```
-
-- Terminal 4
-
-  ```shell
-  $rosrun map_server map_saver -f ~/map
-  ```
-
-<img src="README.assets/image-20220806112534192.png" alt="image-20220806112534192" style="zoom:50%;" />
-
-### **Navigation for turtlebot3**
-
-- Terminal 1
-
-  ```shell
-  $export TURTLEBOT3_MODEL=burger
-  $roslaunch turtlebot3_gazebo turtlebot3_world.launch
-  ```
-
-- Terminal 2
-
-  ```shell
-  $export TURTLEBOT3_MODEL=burger
-  $roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=/home/zsh/map.yaml
-  ```
-
-<img src="README.assets/image-20220806113858468.png" alt="image-20220806113858468" style="zoom:50%;" />
-
-### **Gmapping**
-
-- In ROS, gmapping is implemented by node slam_gmapping.
-
-- **Gmapping** is a reliable and mature SLAM algorithm.
-
-- <img src="README.assets/image-20220806115559715.png" alt="image-20220806115559715" style="zoom:50%;" />
-
-- **Install Gmapping**
-
-  ```shell
-  $sudo apt-get install ros-melodic-gmapping
-  ```
-
-- Topics and services of gmapping:
-
-  - <img src="README.assets/image-20220806122124455.png" alt="image-20220806122124455" style="zoom:50%;" />
-
-- tf transform of gmapping:
-
-  - <img src="README.assets/image-20220806122152047.png" alt="image-20220806122152047" style="zoom:50%;" />
-
-- Some important **parameters** of gmapping:
-
-  - <img src="README.assets/image-20220806122428713.png" alt="image-20220806122428713" style="zoom:50%;" />
-
 ## **Build a map using gmapping**
 
+
 ### Configure gmapping
+安装gmapping库
+```commandline
+    cd catkin_ws/src    
+    git clone https://github.com/ros-perception/slam_gmapping.git
+```
+自行编译与source
 
-- **Creating a catkin Package**
+然后在slam gmapping的文件夹中的launch里 存在slam_gmapping_pr2.launch文件
 
-  ```shell
-  $cd ~/smartcar_ws/src
-  $catkin_create_pkg smartcar_slam roscpp rospy sensor_msgs
-  ```
+其中第四行是gmapping会订阅scan雷达数据，但是原来的gmapping订阅的是basescan
 
-- **Write launch file**
+我们需要将其改为limo小车发布的scan雷达的topic（这部分自行研究）
 
-  ```shell
-  $cd smartcar_slam
-  $mkdir launch 
-  $cd launch 
-  $touch smartcar_gmapping.launch
-  ```
+```commandline
+建议研究下两个命令
+rostopic list
+rostopic info
 
-  ```shell
-  <launch>
-      <param name="use_sim_time" value="true"/>
-      <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-          <remap from="scan" to="scan"/>
-          <param name="base_frame" value="base_footprint"/><!--底盘坐标系-->
-          <param name="odom_frame" value="odom"/><!--里程计坐标系-->
-          <param name="map_update_interval" value="5.0"/>
-          <param name="maxUrange" value="16.0"/>
-          <param name="sigma" value="0.05"/>
-          <param name="kernelSize" value="1"/>
-          <param name="lstep" value="0.05"/>
-          <param name="astep" value="0.05"/>
-          <param name="iterations" value="5"/>
-          <param name="lsigma" value="0.075"/>
-          <param name="ogain" value="3.0"/>
-          <param name="Lskip" value="0"/>
-          <param name="srr" value="0.1"/>
-          <param name="srt" value="0.2"/>
-          <param name="str" value="0.1"/>
-          <param name="stt" value="0.2"/>
-          <param name="linearUpdate" value="1.0"/>
-          <param name="angularUpdate" value="0.5"/>
-          <param name="temporalUpdate" value="3.0"/>
-          <param name="resampleThreshold" value="0.5"/>
-          <param name="particles" value="30"/>
-          <param name="xmin" value="-50.0"/>
-          <param name="ymin" value="-50.0"/>
-          <param name="xmax" value="50.0"/>
-          <param name="ymax" value="50.0"/>
-          <param name="delta" value="0.05"/>
-          <param name="llsamplerange" value="0.01"/>
-          <param name="llsamplestep" value="0.01"/>
-          <param name="lasamplerange" value="0.005"/>
-          <param name="lasamplestep" value="0.005"/>
-      </node>
-  </launch>
-  ```
+```
+### run limo simulate
+在gazebo中进行limo小车的gmapping仿真
 
-### Steps to run gmapping
+Enter the limo_ws folder
 
-- **Bring up the smartcar**
-
-  ```shell
-  $roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
-  ```
-
-- **Run the gmapping launch file**
-
-  ```shell
-  $roslaunch smartcar_slam smartcar_gmapping.launch
-  ```
-
-- **Start the keyboard control**
-
-  ```shell
-  $rosrun smartcar_telep smartcar_teleop_key.py
-  ```
-
-- **Start rviz tool to see the mapping progress**
-
-  ```shell
-  $rviz
-  # Please select messages of topics: /odom /LaserScan /map 
-  # Fixed Frame should be map
-  ```
-
-  <img src="README.assets/image-20220806160551938.png" alt="image-20220806160551938" style="zoom:50%;" />
-
-## **Map server**
-
-### **Introduction of map server**
-
-- We have built the map by GMapping and displayed the map in RVIz, but currently the map data is kept in memory and is released when the node is shut down.
-- We need to serialize the raster map to the disk for persistent storage, and then read the map data from the disk through deserialization before proceeding with subsequent operations.
-- In ROS, serialization and deserialization of map data can be achieved through the MAP_Server function package.
-- **“map_server”** **package in the** **navigation** **metapackage.**
-- Map_server provides two nodes:map_saver and map_server.
-- map_saver is used to save a map to disk.
-- map_server reads a map from disk.
-
-### **Save the map** 
-
-```shell
-$cd ~/smartcar_slam
-$cd launch 
-$touch smartcar_savemap.launch
+```
+cd limo_ws
 ```
 
-```shell
-<launch>
-    <arg name="filename" value="$(find smartcar_slam)/map/maze_gmapping" />
-    <node name="map_save" pkg="map_server" type="map_saver" args="-f $(arg filename)" />
-</launch>
+Declare the environment variable
+
+```
+source devel/setup.bash
 ```
 
-```shell
-$roslaunch smartcar_slam smartcar_savemap.launch
+Start the simulation environment of limo, limo have two movement mode, the movement mode is Ackerman mode
+
+开启limo的gazebo环境仿真
+1. 打开空白的世界诶
+```
+#这条命令会打开一个空白的世界
+roslaunch limo_gazebo_sim limo_ackerman.launch
+```
+2. 打开含有地图的世界
+
+```
+roscd limo_gazebo_sim
+cd launch
+gedit limo_ackerman.launch
+```
+可以看到 limo_ackerman.launch 文件，其中第五行有个world_name的参数,默认参数是empty.world
+
+可以选择的世界有两种
+```
+willowgarage.world
+clearpath_playpen.world
+```
+选择其一替换掉empty.world，然后再运行
+```
+roslaunch limo_gazebo_sim limo_ackerman.launch
+```
+这里因为修改了默认模型，所以会打开新的世界而不是空白的世界
+
+下图为使用willowgarage.world的世界中rviz的图像与gazebo的图像
+
+![img](./images/img4.png) 
+
+![img](./images/img5.png) 
+
+
+
+3. Control by keyboard, the robot can be controlled to move forward, left, right and backward through "i", "j", "l",and "," on the keyboard
+
+```
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py 
+```
+如果感觉转弯效果不明显，可以按e增加转弯控制的极限
+
+比如原来按转弯前轮只转10度，按了后就变成11度，再按就变12.1度，转弯会逐渐变明显
+![img](./images/img2.png) 
+
+
+
+### use gmapping
+
+在上面那节自己找一个带有地图的limo仿真运行
+
+```commandline
+cd catkin_ws/src/slam_gmapping/gmapping/launch/
+roslaunch ./slam_gmapping_pr2.launch 
 ```
 
-### **Load the map**
-
-```shell
-$cd ~/smartcar_slam
-$cd launch 
-$touch smartcar_loadmap.launch
+自行打开rviz观察建图的状态
+```commandline
+rviz
 ```
+gmapping建图的地图的topic名称是/map
 
-```shell
-<launch>
-    <!--设置地图的配置文件-->
-    <arg name="map" value="$(find smartcar_slam)/map/maze_gmapping.yaml" />
-    <!--运行地图服务器，并且加载设置的地图-->
-    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map)"/>
-</launch>
-```
+rviz在查看地图时有大概这个效果
 
-```shell
-$roslaunch smartcar_slam smartcar_loadmap.launch
+![img](./images/img1.png) 
+
+自行移动小车来构建更大的地图
+保存地图
+
+```commandline
+rosrun map_server map_saver -f ~/map
 ```
 
