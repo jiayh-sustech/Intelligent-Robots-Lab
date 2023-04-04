@@ -153,7 +153,7 @@ $rosrun smartcar_demo smartcar_obstacle.py
 
 **在此需要进行数据对齐**
 
-在跑完之后会发现车辆并无法正常停止，根据输出可发现其最短距离一致浮动，较为诡异，查看代码后其代码逻辑存在问题。
+在跑完之后会发现车辆并无法正常停止，根据输出可发现其最短距离一直浮动，较为诡异，查看代码后发现问题。
 *get_scan*函数仅需要返回所有正常点云数据即可，而按照其现有的代码逻辑，仅返回了*scan.ranges[0]*。
 turtlebot3的雷达index代表对应的角度，比如*scan.ranges[0]*为正前方深度，但是limo并不是数据与其不同。
 可通过rqt对包头进行查看，可在工具栏中：*Plogins->Topics->Topic Monitors*，勾选*/limo/scan*。
