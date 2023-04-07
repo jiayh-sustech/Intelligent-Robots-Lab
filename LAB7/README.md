@@ -522,7 +522,6 @@ camera_reading:
 3. 回到smartcar_ws目录，执行：
 
 ```
-source devel/setup.bash
 roslaunch darknet_ros darknet_ros.launch
 ```
 
@@ -591,14 +590,12 @@ camera_reading:
 回到smartcar_ws目录，执行：
 
 ```
-source devel/setup.bash
-roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+roslaunch limo_gazebo_sim limo_four_diff.launch
 ```
 
 另开teminal:
 
 ```
-source devel/setup.bash
 roslaunch darknet_ros darknet_ros.launch
 ```
 
