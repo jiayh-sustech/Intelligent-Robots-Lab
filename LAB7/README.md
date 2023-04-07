@@ -339,7 +339,7 @@ $rosrun smartcar_demo maze_explorer.py
 Install Opencv
 
 ```
-$sudo apt-get install ros-noetic-vision-opencv libopencv-dev python-opencv
+$sudo apt-get install ros-noetic-vision-opencv libopencv-dev python3-opencv
 ```
 
 
