@@ -539,7 +539,7 @@ convert to
 
 ```
 camera_reading:
-	topic:/camera/image_raw
+	topic:/limo/image_raw
 ```
 
 回到smartcar_ws目录，执行：
