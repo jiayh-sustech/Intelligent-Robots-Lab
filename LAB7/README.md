@@ -366,6 +366,11 @@ step2:Modify CMakeLists.txt
 Add one line in CMakeLists.txt:
 
 ```
+find_package(catkin REQUIRED COMPONENTS
+    image_transport
+    cv_bridge
+    ...
+)
 find_package(OpenCV REQUIRED)
 ```
 
