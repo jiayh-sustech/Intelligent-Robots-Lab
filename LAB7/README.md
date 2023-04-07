@@ -529,51 +529,6 @@ roslaunch darknet_ros darknet_ros.launch
 
 ### Yolo for smartcar
 
-/smartcar_gazebo/smartcar_with_laser_nav.launch
-
-```
-<launch>
-    <!-- 设置launch文件的参数 -->
-    <arg name="world_name" value="$(find smartcar_gazebo)/world/pokemon_maze_cs405.world"/>
-    <arg name="paused" default="false"/>
-    <arg name="use_sim_time" default="true"/>
-    <arg name="gui" default="true"/>
-    <arg name="headless" default="false"/>
-    <arg name="debug" default="false"/>
-    <param name="use_gui" value="false"/>
-
-    <!-- 运行gazebo仿真环境 -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(arg world_name)"/>
-        <arg name="debug" value="$(arg debug)" />
-        <arg name="gui" value="$(arg gui)" />
-        <arg name="paused" value="$(arg paused)"/>
-        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-        <arg name="headless" value="$(arg headless)"/>
-    </include>
-
-    <!-- 加载机器人模型描述参数 -->
-    <arg name="model" default="$(find smartcar_description)/urdf/smartcar_with_laser_and_camera.gazebo.xacro"/> 
-    <!-- <arg name="model" default="$(find smartcar_description)/urdf/test.xacro"/>  -->
-    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" /> 
-
-    <!-- 运行joint_state_publisher节点，发布机器人的关节状态  -->
-    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
-
-    <!-- 运行robot_state_publisher节点，发布tf  -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
-        <param name="publish_frequency" type="double" value="50.0" />
-    </node>
-
-    <!-- 在gazebo中加载机器人模型-->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          args="-urdf -model mrobot -param robot_description"/> 
-
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find smartcar_gazebo)/rivz_config/smartcar_with_laser_nav.rviz" required="true" />
-</launch>
-```
-
-
 
 ```
 camera_reading:
