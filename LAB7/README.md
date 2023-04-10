@@ -547,7 +547,7 @@ camera_reading:
 	topic:/limo/color/image_raw
 ```
 
-再地图素材中*bus.world*较为贴合，可如下更改*world_name*(刚刚更新，需要git pull https://github.com/Intelligent-Robot-Course/ugv_gazebo_sim)。
+再地图素材中*bus.world*较为贴合，可如下更改*world_name*(刚刚更新，需要git pull ugv_gazebo_sim仓库)。
 ```
 <arg name="world_name" default="$(find limo_gazebo_sim)/worlds/bus.world"/>
 ```
