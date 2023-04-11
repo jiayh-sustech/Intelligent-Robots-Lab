@@ -1,5 +1,9 @@
 # Intelligent-Robots-Lab8
 
+## task
+自行选择地图并运行limo的gazebo仿真
+在选择的地图上使用gmapping构建地图并保存
+
 ## Introduction of Mapping, Localization, Navigation
 
 <img src="README.assets/image-20220806110718629.png" alt="image-20220806110718629" style="zoom:50%;" />
