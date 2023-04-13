@@ -112,11 +112,11 @@ rosrun map_server map_saver -f ~/map
 #### 7、Result
 
 直接在limo仿真的打开的rviz里查看map的topic，详情请搜索如何使用rviz
-![打滑](image/img0.png)
+![打滑](./image/img0.png)
 
 #### 8、hector_slam过程中会出现打滑显现
 
-![打滑](image/打滑.png)
+![打滑](./image/打滑.png)
 
 
 ### Cartographer
@@ -141,9 +141,16 @@ https://google-cartographer-ros.readthedocs.io/en/latest/
 http://wiki.ros.org/cartographer
 
 #### 2、Install cartographer
+##### 2.1  Package installation (ubuntu18)
 
-Package installation
-`sudo apt-get install ros-noetic-cartographer-*`
+`sudo apt-get install ros-melodic-cartographer-*`
+
+##### 2.2  Package installation (ubuntu20)
+
+
+```commandline
+
+```
 
 #### 3、Code for smartcar
 
