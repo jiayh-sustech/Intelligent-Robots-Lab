@@ -71,7 +71,7 @@ rosrun map_server map_saver -f ~/map
 
 自行通过git将该代码clone到想要放的workspace里面，然后自己编译
 
-#### 5、Code for smartcar
+#### 5、Code for limo
 
 ##### 1) Configure hector
 
@@ -205,7 +205,7 @@ source install_isolated/setup.bash
 
 
 
-#### 3、Code for smartcar
+#### 3、Code for limo
 
 ##### 1) Configure cartographer
 
