@@ -520,11 +520,7 @@ Code
 
 ![tree_2](image/tree_2.png)
 
-The result of acml is like below (remember open pose and map topic):
-
-![acml_result](image/acml_sample.png)
-
-#### 8、Code for turtlebot3
+#### 8、Code for turtlebot3(还没有更新，暂时不用跑)
 
 You can create a launch file with the following code and run it in your world with turtlebot3(Please change the map_file).
 
@@ -612,7 +608,9 @@ You can create a launch file with the following code and run it in your world wi
 
 #### 9、Result
 
-![AMCL_result](image/AMCL_result.png)
+The result of acml is like below (remember open pose and map topic):
+
+![acml_result](image/acml_sample.png)
 
 ## Lab Task
 
