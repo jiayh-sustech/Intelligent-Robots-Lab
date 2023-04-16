@@ -175,6 +175,8 @@ wstool merge -t src https://raw.githubusercontent.com/cartographer-project/carto
 wstool update -t src
 
 # 3.安装依赖包proto3、deb等
+# 注意proto3如果通过apt下过的可以不用在下（protoc --version）
+
 sudo rosdep init   #如果执⾏报错，可以直接忽略
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
