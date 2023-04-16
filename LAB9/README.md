@@ -476,6 +476,7 @@ Code
 		<param name="odom_frame_id" value="odom"/> <!-- 里程计坐标系 -->
 		<param name="base_frame_id" value="base_footprint"/> <!--添加机器人基坐标系-->
 		<param name="global_frame_id" value="map"/> <!--添加地图坐标系-->
+		<remap from="scan" to="/limo/scan" />  
 	</node>
 </launch>
 ```
@@ -493,29 +494,33 @@ The AMCL node cannot be run independently. It is necessary to load the global ma
 `touch smartcar_amcl.launch`
 
 Code
+**更改map_server的参数至建图部分的yaml文件路径**
+
 ```html
 <launch>
-	<arg name="map" default="maze_cartograhper.yaml"/>
-	<node name="map_server" pkg="map_server" type="map_server" args="$(find smartcar_slam)/map/$(arg map)"/>
+	<arg name="map" default="My.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="/home/hqlab/Downloads/$(arg map)"/>
 	<include file="$(find smartcar_navigation)/launch/amcl.launch"/>
 	<node pkg="rviz" type="rviz" name="rviz"/>
 </launch>
 ```
 ##### 4) Steps to run AMCL
 
-`roslaunch smartcar_gazebo smartcar_with_laser_nav.launch`
+`roslaunch limo_gazebo_sim limo_four_diff.launch`
 
 `rosrun rqt_tf_tree rosrun rqt_tf_tree`
 
 ![tree_1](image/tree_1.png)
 
-`$roslaunch smartcar_navigation smartcar_amcl.launch`
+`roslaunch smartcar_navigation smartcar_amcl.launch`
 
 `rosrun rqt_tf_tree rosrun rqt_tf_tree`
 
 ![tree_2](image/tree_2.png)
 
-`roslaunch smartcar_teleop smartcar_teleop.launch`
+The result of acml is like below (remember open pose and map topic):
+
+![acml_result](image/acml_sample.png)
 
 #### 8、Code for turtlebot3
 
