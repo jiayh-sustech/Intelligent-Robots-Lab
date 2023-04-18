@@ -510,13 +510,13 @@ Code
 
 `roslaunch limo_gazebo_sim limo_four_diff.launch`
 
-`rosrun rqt_tf_tree rosrun rqt_tf_tree`
+`rosrun rqt_tf_tree rqt_tf_tree`
 
 ![tree_1](image/tree_1.png)
 
 `roslaunch smartcar_navigation smartcar_amcl.launch`
 
-`rosrun rqt_tf_tree rosrun rqt_tf_tree`
+`rosrun rqt_tf_tree rqt_tf_tree`
 
 ![tree_2](image/tree_2.png)
 
