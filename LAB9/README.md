@@ -229,7 +229,7 @@ gedit cartographer_demo_rplidar.launch
             -configuration_directory $(find cartographer_ros)/configuration_files  
             -configuration_basename rplidar.lua"  
         output="screen">  
-    <remap from="scan" to="scan" />  
+    <remap from="scan" to="limo/scan" />  
   </node>  
 
   <node name="rviz" pkg="rviz" type="rviz" required="true"  
