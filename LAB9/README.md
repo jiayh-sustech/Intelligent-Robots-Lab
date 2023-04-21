@@ -200,6 +200,7 @@ published_frame = “laser_link”
 然后编译安装
 ```commandline
 # 5.编译和安装cartographer_ros整个项⽬⼯程
+# 每次更改launch需要重新catkin_make
 cd  ~/catkin_ws_carto
 catkin_make_isolated --install --use-ninja
 source install_isolated/setup.bash
