@@ -1,0 +1,50 @@
+<launch>
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+		<!-- Publish scans from best pose at a max of 10 Hz -->
+		<!--可视化扫描和路径信息的最大周期-->
+		<!--例如: 10Hz＝0.1秒，-1.0 则被禁用-->
+		<param name="gui_publish_rate" value="10.0"/>
+
+		<param name="laser_max_beams" value="30"/>
+
+		<param name="min_particles" value="500"/> <!--允许的最小粒子数量-->
+		<param name="max_particles" value="5000"/> <!--允许的最大粒子数量（越大越好)-->
+
+		<param name="update_min_d" value="0.2"/> <!--执行滤波器更新之前所需的平移运动（以米为单位）-->
+		<param name="update_min_a" value="0.5"/> <!--执行滤波器更新之前所需的旋转运动（以弧 度为单位-->
+		<param name="kld_err" value="0.05"/> <!--实际分布与估计分布之间的最大误差-->
+		<param name="kld_z" value="0.99"/>
+
+		<param name="resample_interval" value="1"/> <!--重采样间隔 -->
+
+		<param name="transform_tolerance" value="0.1"/> <!--允许的转换时间（以秒为单位）-->
+
+		<param name="recovery_alpha_slow" value="0.0"/> <!--指数衰减率-->
+		<param name="recovery_alpha_fast" value="0.0"/> <!--指数衰减率-->
+
+		<!--Laser model parameters-->
+		<param name="laser_z_hit" value="0.5"/>
+		<param name="laser_z_short" value="0.05"/>
+		<param name="laser_z_max" value="0.05"/>
+		<param name="laser_z_rand" value="0.5"/>
+		<param name="laser_sigma_hit" value="0.2"/>
+		<param name="laser_lambda_short" value="0.1"/>
+
+		<!-- Maximum distance to do obstacle inflation on map-->
+		<param name="laser_likelihood_max_dist" value="2.0"/>
+		<param name="laser_model_type" value="likelihood_field"/>
+		<!-- <param name="laser_model_type" value="beam"/> -->
+
+		<!-- Odometry model parameters-->
+		<param name="odom_model_type" value="diff"/>
+		<param name="odom_alpha5" value="0.1"/>
+		<param name="odom_alpha1" value="0.2"/>
+		<param name="odom_alpha2" value="0.2"/>
+		<param name="odom_alpha3" value="0.8"/>
+		<param name="odom_alpha4" value="0.2"/>
+		<param name="odom_frame_id" value="odom"/> <!-- 里程计坐标系 -->
+		<param name="base_frame_id" value="base_footprint"/> <!--添加机器人基坐标系-->
+		<param name="global_frame_id" value="map"/> <!--添加地图坐标系-->
+		<remap from="scan" to="/limo/scan" />  
+	</node>
+</launch>

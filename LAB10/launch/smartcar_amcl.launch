@@ -1,0 +1,7 @@
+<launch>
+	<arg name="map" default="MyMaps.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="/home/syw/robot/$(arg map)"/>
+	<include file="$(find smartcar_navigation)/launch/amcl.launch"/>
+	<node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
+
