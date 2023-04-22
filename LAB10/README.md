@@ -8,6 +8,10 @@
 - 学会使用ROS的导航技术栈。
 
 - 理解A\*/Dijkstra算法、DWA算法
+- 本节lab中的车辆转向控制参数修改，使车辆能跟踪规划出来的轨迹
+- 解释launch文件中不同参数的意义
+
+
 
 ## 系统环境准备
 
@@ -16,7 +20,6 @@ ubuntu18
 sudo apt-get install ros-melodic-navigation
 sudo apt-get install ros-melodic-teb-local-planner
 sudo apt-get install ros-melodic-teb-local-planner-tutorials
-
 ```
 
 ubuntu20
@@ -25,6 +28,8 @@ sudo apt-get install ros-noetic-navigation
 sudo apt-get install ros-noetic-teb-local-planner
 sudo apt-get install ros-noetic-teb-local-planner-tutorials
 ```
+### 文件准备
+将launch,param,rviz文件夹复制进上节lab的smartcar_navigation里面
 
 ## 运行规划算法
 
