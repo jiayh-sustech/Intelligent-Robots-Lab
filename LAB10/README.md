@@ -40,10 +40,9 @@ sudo apt-get install ros-noetic-teb-local-planner-tutorials
 cd limo_ws/
 source devel/setup.bash
 roslaunch limo_gazebo_sim limo_four_diff.launch
-roslaunch limo_gazebo_sim limo_ackerman.launch
 ```
 
-### 规划导航
+### 规划导航（运行前更改每个launch中对应map的位置）
 ```
 roslaunch smartcar_navigation smartcar_navigation_teb.launch
 roslaunch smartcar_navigation smartcar_navigation_dwa.launch
