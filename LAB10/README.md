@@ -48,5 +48,5 @@ roslaunch smartcar_navigation smartcar_navigation_teb.launch
 roslaunch smartcar_navigation smartcar_navigation_dwa.launch
 roslaunch smartcar_navigation smartcar_navigation_teb_astar.launch
 ```
-
+通过rviz工具栏中的2D Nav Goal发布重点信息
 ![result](images/img1.png)
