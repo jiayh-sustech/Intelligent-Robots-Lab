@@ -175,7 +175,6 @@ wstool merge -t src https://raw.githubusercontent.com/cartographer-project/carto
 wstool update -t src
 
 # 3.安装依赖包proto3、deb等
-# 注意proto3如果通过apt下过的可以不用在下（protoc --version）
 
 sudo rosdep init   #如果执⾏报错，可以直接忽略
 rosdep update
@@ -183,7 +182,7 @@ rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
 
 ./src/cartographer/scripts/install_debs_cmake.sh  #req libs
 ./src/cartographer/scripts/install_abseil.sh    #abseil
-./src/cartographer/scripts/install_proto3.sh    #proto3
+./src/cartographer/scripts/install_proto3.sh    #proto3 # 注意proto3如果通过apt下过的可以不用在下（protoc --version）
 ./src/cartographer/scripts/install_ceres.sh     #ceres-solver 如果代码下不下来，修改.sh里git clone https://github.com/ceres-solver/ceres-solver.git
 
 cd ~/catkin_ws_carto/src/cartographer_ros/cartographer_ros/configuration_files
