@@ -19,14 +19,12 @@ ubuntu18
 ```commandline
 sudo apt-get install ros-melodic-navigation
 sudo apt-get install ros-melodic-teb-local-planner
-sudo apt-get install ros-melodic-teb-local-planner-tutorials
 ```
 
 ubuntu20
 ```commandline
 sudo apt-get install ros-noetic-navigation
 sudo apt-get install ros-noetic-teb-local-planner
-sudo apt-get install ros-noetic-teb-local-planner-tutorials
 ```
 ### 文件准备
 将launch,param,rviz文件夹复制进上节lab的smartcar_navigation里面
