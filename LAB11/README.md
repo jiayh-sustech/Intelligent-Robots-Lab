@@ -29,13 +29,6 @@ Ros Messages:
 Step 1.
 
 ```
-$cd ~/catkin_ws/src
-$catkin_create_pkg smartcar_navigation actionlib sensor_msgs geometry_msgs move_base_msgs roscpp rosp
-```
-
-Step 2.
-
-```
 $cd ~/smartcar_ws/src/smartcar_navigation
 $mkdir scripts
 $cd scripts
@@ -47,39 +40,39 @@ $touch move_goal.py
   ```python
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
-  
+
   import roslib
   import rospy
   import actionlib
   from actionlib_msgs.msg import *
   from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
   from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-  
+
   # Initialize the node
   rospy.init_node('move_test', anonymous=True)
   # Subscribe messages from move_base server
   move_base = actionlib.SimpleActionClient('move_base', MoveBaseAction)
   rospy.loginfo('Waiting for move_base action server...')
-  
+
   # Wait for response from server for at most 5 seconds
-  While move_base.wait_for_server(rospy.Duration(5.0)) == 0:
+  while move_base.wait_for_server(rospy.Duration(5.0)) == 0:
       rospy.loginfo("Connected to move base server")
-      
+
   # Set target
-  target = Pose(Point(-1.543, 1.779, 0.000), Quaternion(0.000, 0.000, 0.645, 0.764))
+  target = Pose(Point(-0.543, 0.779, 0.000), Quaternion(0.000, 0.000, 0.645, 0.764))
   goal = MoveBaseGoal()
   goal.target_pose.pose = target
   goal.target_pose.header.frame_id = 'map'
-  goal.target_post.header.stamp = rospy.Time.now()
-  
+  goal.target_pose.header.stamp = rospy.Time.now()
+
   rospy.loginfo('Going to ' + str(target))
-  
+
   # Set out to the goal
   move_base.send_goal(goal)
-  
+
   # Five minutes limit
   finished_within_time = move_base.wait_for_result(rospy.Duration(300))
-  
+
   # Check if succeeded
   if not finished_within_time:
       move_base.cancel_goal()
@@ -99,19 +92,19 @@ Step 3.
 - Terminal 1:
 
   ```
-  $roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+  roslaunch limo_gazebo_sim limo_four_diff.launch
   ```
 
 - Terminal 2:
 
   ```
-  $roslaunch smartcar_navigation smartcar_navigation_teb.launch
+  roslaunch smartcar_navigation smartcar_navigation_teb.launch
   ```
 
 - Terminal 3:
 
   ```
-  $rosrun smartcar_navigation move_goal.py
+  rosrun smartcar_navigation move_goal.py
   ```
 
 ### Programming Demo 2
@@ -121,83 +114,81 @@ Step 3.
   ```python
   #!/usr/bin/env python
   # -*- coding: utf-8 -*-
-  
+
   import rospy
   import actionlib
   import tf
   from math import pi
   from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
   from actionlib_msgs.msg import *
-  
+
   waypoints = [ # List of way points
-      [(4.77, 0.2, 0.0), tf.transformations.quaternion_from_euler(0, 0, 45*pi/180)],
-      [(7.75, -0.056, 0.0), tf.transformations.quaternion_from_euler(0, 0, 0*pi/180)],
-      [(5.55, -1.25, 0.0), tf.transformations.quaternion_from_euler(0, 0, 45*pi/180)],
-      [(5.48, -4.2, 0.0), tf.transformations.quaternion_from_euler(0, 0, 0*pi/180)],
-      [(1.81, -3.31, 0.0), tf.transformations.quaternion_from_euler(0, 0, 325*pi/180)],
-      [(1.58, -4.21, 0.0), tf.transformations.quaternion_from_euler(0, 0, 0*pi/180)],
+      [(0, -1, 0.0), tf.transformations.quaternion_from_euler(0, 0, 270*pi/180)],
+      [(-1, -1, 0.0), tf.transformations.quaternion_from_euler(0, 0, 180*pi/180)],
+      [(-1, 0, 0.0), tf.transformations.quaternion_from_euler(0, 0, 90*pi/180)],
+      [(0, 0, 0.0), tf.transformations.quaternion_from_euler(0, 0, 0*pi/180)],
   ]
-  
+
   def goal_pose(pose): # Convert from waypoints to goal positions
-      goal_post = MoveBaseGoal()
-      
+      goal_pose = MoveBaseGoal()
+
       goal_pose.target_pose.header.frame_id = 'map'
-      
+
       goal_pose.target_pose.pose.position.x = pose[0][0]
       goal_pose.target_pose.pose.position.y = pose[0][1]
       goal_pose.target_pose.pose.position.z = pose[0][2]
-      
+
       goal_pose.target_pose.pose.orientation.x = pose[1][0]
       goal_pose.target_pose.pose.orientation.y = pose[1][1]
       goal_pose.target_pose.pose.orientation.z = pose[1][2]
       goal_pose.target_pose.pose.orientation.w = pose[1][3]
-      
+
       return goal_pose
-  
+
   if __name__ == '__main__':
       rospy.init_node('maze_patrol')
-      
+
       move_base = actionlib.SimpleActionClient('move_base', MoveBaseAction) # Creates the action client
       move_base.wait_for_server()
-      
+
       for pose in waypoints: # Loop through each waypoints, sending them as goals
-          goal = goal_post(pose)
+          goal = goal_pose(pose)
           move_base.send_goal(goal)
           print('Moving towards goal...')
-          
+
           # Five minutes budget
-          finished_within_time = move_base.wait_for_result(rospy.Duration(20))
-          
+          finished_within_time = move_base.wait_for_result(rospy.Duration(100))
+
           # Check if succeeded
           if not finished_within_time:
-      		move_base.cancel_goal()
-      		rospy.loginfo('Timed out achieving goal')
-  		else:
-      		state = move_base.get_state()
-      		if state == GoalStatus.SUCCEEDED:
-          		rospy.loginfo('Goal Succeeded!')
-      		else:
-          		rospy.loginfo('Goal Failed!')
-  	
+              move_base.cancel_goal()
+              rospy.loginfo('Timed out achieving goal')
+          else:
+              state = move_base.get_state()
+              if state == GoalStatus.SUCCEEDED:
+                  rospy.loginfo('Goal Succeeded!')
+              else:
+                  rospy.loginfo('Goal Failed!')
+
       print('Completed.')
   ```
 
 - Terminal 1
 
   ```
-  $roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+  roslaunch limo_gazebo_sim limo_four_diff.launch
   ```
 
 - Terminal 2
 
   ```
-  $roslaunch smartcar_navigation smartcar_navigation_teb.launch
+  roslaunch smartcar_navigation smartcar_navigation_teb.launch
   ```
 
 - Terminal 3
 
   ```
-  $rosrun smartcar_navigation move_goal.py
+  rosrun smartcar_navigation maze_patrol.py
   ```
 
 ## The robot moves and maps autonomously
@@ -205,10 +196,10 @@ Step 3.
 Step 1. Write  a launch file for move_base + slam
 
 ```
-$cd ~/smartcar_ws/src/smartcar_navigation
-$mkdir launch
-$cd launch
-$touch smartcar_slam_navigation.launch
+cd ~/smartcar_ws/src/smartcar_navigation
+mkdir launch
+cd launch
+touch smartcar_slam_navigation.launch
 ```
 
 - smartcar_navigation.launch
@@ -229,13 +220,13 @@ Step 2.test
 - bring up the smartcar
 
   ```
-  $roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+  roslaunch limo_gazebo_sim limo_four_diff.launch
   ```
 
 - run the slam_navigation launch file
 
   ```
-  $roslaunch smartcar_navigation smartcar_slam_navigation.launch
+  roslaunch smartcar_navigation smartcar_slam_navigation.launch
   ```
 
 ## RRT exploration
@@ -251,9 +242,9 @@ For more details, please refer to http://wiki.ros.org/rrt_exploration
 Step 1. Download code
 
 ```
-$cd ~/smartcar_ws/src
-$git clone https://github.com/hasauino/rrt_exploration.git
-$git clone https://github.com/hasauino/rrt_exploration_tutorials
+cd ~/smartcar_ws/src
+git clone https://github.com/hasauino/rrt_exploration.git
+git clone https://github.com/hasauino/rrt_exploration_tutorials
 ```
 
 Step 2. Package Installation
