@@ -250,7 +250,7 @@ git clone https://github.com/hasauino/rrt_exploration_tutorials
 Step 2. Package Installation
 
 ```
-$sudo apt-get install python-opencv python-numpy python-scikits-learn ros-melodic-gmapping ros-melodic-navigation
+sudo apt-get install python3-opencv python3-numpy python3-sklearn ros-noetic-gmapping ros-noetic-navigation
 ```
 
 Step 3. Building
@@ -263,11 +263,11 @@ $catkin_make
 Step 4. Write a move_base + slam launch file for rrt
 
 ```
-$cd ~/smartcar_ws/src/smartcar_navigation
-$mkdir launch
-$cd launch
-$touch smartcar_slam_navigation_rrt.launch
-$touch move_base_safe.launch
+cd ~/smartcar_ws/src/smartcar_navigation
+mkdir launch
+cd launch
+touch smartcar_slam_navigation_rrt.launch
+touch move_base_safe.launch
 ```
 
 - smartcar_slam_navigation_rrt.launch
@@ -354,8 +354,9 @@ Step 5. Modify `src/rrt_exploration/launch/single.launch`
 Step 6.
 
 ```
-$cd ~/smartcar_ws/src
-$mv rrt_exploration_tutorials/launch/inlcudes/rviz_configs/single.rviz rrt_exploration/rviz/single.rviz
+cd ~/smartcar_ws/src
+mkdir rrt_exploration/rviz
+mv rrt_exploration_tutorials/launch/includes/rviz_configs/single.rviz rrt_exploration/rviz/single.rviz
 ```
 
 Step 7. Test
@@ -363,13 +364,13 @@ Step 7. Test
 - bring up the smartcar
 
   ```
-  $roslaunch smartcar_gazebo smartcar_with_laser_nav.launch
+  roslaunch limo_gazebo_sim limo_four_diff.launch
   ```
 
 - run the slam_navigation launch file
 
   ```
-  $roslaunch smartcar_navigation smartcar_slam_navigation_rrt.launch
+  roslaunch smartcar_navigation smartcar_slam_navigation_rrt.launch
   ```
 
   - smartcar_slam_navigation_rrt.launch
