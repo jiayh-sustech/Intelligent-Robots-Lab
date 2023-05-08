@@ -353,11 +353,7 @@ Step 5. Modify `src/rrt_exploration/launch/single.launch`
 
 Step 6.
 
-```
-cd ~/smartcar_ws/src
-mkdir rrt_exploration/rviz
-mv rrt_exploration_tutorials/launch/includes/rviz_configs/single.rviz rrt_exploration/rviz/single.rviz
-```
+save the *single.rviz* file to *~/smartcar_ws/src/rrt_exploration/rviz/single.rviz*
 
 Step 7. Test
 
@@ -373,25 +369,19 @@ Step 7. Test
   roslaunch smartcar_navigation smartcar_slam_navigation_rrt.launch
   ```
 
-  - smartcar_slam_navigation_rrt.launch
-
-    ```xml
-    <launch>
-        <include file="$(find smartcar_slam)/launch/smartcar_gmapping.launch"/>
-        <include file="$(find smartcar_navigation)/launch/move_base_teb_astar.launch"/>
-    </launch>
-    ```
-
 - run rrt
 
   ```
-  $roslaunch rrt_exploration single.launch
+  roslaunch rrt_exploration single.launch
   ```
+  
+The result is similar as below:
+
+![single](https://raw.githubusercontent.com/hasauino/storage/master/pictures/sequence_of_points_small.gif)
 
 ## Lab Task
 
 Based on the Lab Project we provided, you are required to complete the following tasks:
 
 - Use the rrt_exploration package to try out robot map exploration.
-- It is recommended that you use multiple robots to explore the map
 - Write a lab report for the task, the report contains code, steps, results, results analysis and others.
