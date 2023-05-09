@@ -1,0 +1,16 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_footprint
+
+  update_frequency: 10.0
+  publish_frequency: 10.0
+  transform_tolerance: 0.5 #坐标系间的转换可以忍受的最大延时;
+
+  static_map: true #配置是否使用map_server提供的地图来初始化，一般全局地图都是静态的，需要设置为true;
+  rolling_window: false #是否在机器人移动过程中需要滚动窗口，始终保持机器人在当前窗口中心位置;
+  #在global_costmap中使用下面三个插件来融合三个不同图层，
+  #分别是static_layer、obstacle_layer和inflation_layer，合成一个master_layer来进行全局路径规划。
+  # plugins: 
+  #   - {name: static_layer,    type: "costmap_2d::StaticLayer"}
+  #   - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}
+  #   - {name: inflation_layer, type: "costmap_2d::InflationLayer"}

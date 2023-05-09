@@ -1,0 +1,115 @@
+TebLocalPlannerROS:
+
+ odom_topic: /odom
+ map_frame: odom
+
+ #Trajectory
+ teb_autosize: True #优化期间允许改变轨迹的时域长度 default:True
+ dt_ref: 0.45 #局部路径规划的解析度# minimum 0.01 default:0.3  0.01~1.0
+ dt_hysteresis: 0.1 #允许改变的时域解析度的浮动范围， 一般为 dt_ref 的 10% 左右 default:0.1  0.002~0.5
+ global_plan_overwrite_orientation: False #覆盖全局路径中局部路径点的朝向 default:True
+ #allow_init_with_backwards_motion:False #允许在开始时想后退来执行轨迹 default:False
+ max_global_plan_lookahead_dist: 3.0 #考虑优化的全局计划子集的最大长度 （累积欧几里得距离）（如果为0或负数：禁用；长度也受本地Costmap大小的限制） default:3.0  0.0~50.0
+ feasibility_check_no_poses: 5 #检测位姿可到达的时间间隔 default:5 0~50
+
+ # Robot
+ max_vel_x: 0.5 #最大x前向速度
+ max_vel_y: 0 #最大y前向速度，非全向移动小车需要设置为0
+ max_vel_x_backwards: 0.35 #最大后退速度
+ max_vel_theta: 1.5  #最大转向角速度
+ acc_lim_x: 0.2  #最大x向加速度
+ acc_lim_y: 0.2  #最大y向加速度，非全向移动小车需要设置为0
+ acc_lim_theta: 0.3  #最大角加速度
+
+ #阿克曼小车参数.差速驱动机器人设置为0
+ min_turning_radius: 0.04   #车类机器人的最小转弯半径 default:0.0   0.0~50.0
+
+ wheelbase: 0.0  #驱动轴和转向轴之间的距离（仅适用于启用了“Cmd_angle_而不是_rotvel”的Carlike机器人）；对于后轮式机器人，该值可能为负 default:1.0  -10.0~10.0
+ #wheelbase: 0.143 #for mini_akm
+ #wheelbase: 0.320 #for senior_akm
+ #wheelbase: 0.503 #for top_akm_bs
+ #wheelbase: 0.549 #for top_akm_dl
+
+ cmd_angle_instead_rotvel: False #将收到的角速度消息转换为 操作上的角度变化。 default:False
+                                 #true则cmd_vel/angular/z内的数据是舵机角度
+
+ footprint_model: # types: "point", "circular", "two_circles", "line", "polygon" 默认“point”类型
+  type: "polygon"   #多边形类型for akm/mec，默认”point”。
+
+  #麦轮
+  #vertices: [[-0.133, -0.125], [-0.133, 0.125],[0.133,0.125],[0.133, -0.125]] #多边形端点坐标 for mini_mec
+  vertices: [[-0.1, -0.08], [-0.1, 0.08], [0.1, 0.08], [0.1, -0.08]]
+  #全向轮
+  #radius: 0.12 #for mini_omni
+
+ xy_goal_tolerance: 0.2   #目标 xy 偏移容忍度 default:0.2 minimum 0.001 maximum 0.2
+ yaw_goal_tolerance: 0.1 #目标 角度 偏移容忍度 default:0.1  minimum 0.001 maximum 0.1
+ free_goal_vel: False  #允许机器人以最大速度驶向目的地 default:False
+ complete_global_plan: True
+ 
+ # Obstacles
+ min_obstacle_dist: 0.04 #和障碍物最小距离 default:0.5  0.0~10.0
+ include_costmap_obstacles: True  #是否将动态障碍物预测为速度模型，costmap 中的障碍物是否被直接考虑 default:True  
+ costmap_obstacles_behind_robot_dist: 1.0 #限制机器人后方规划时考虑的局部成本地图障碍物 default:1.5  0.0~20.0
+ obstacle_poses_affected: 15   #障碍物姿态受影响0~30 default:30  0~200
+ costmap_converter_plugin: ""
+ costmap_converter_spin_thread: True
+ costmap_converter_rate: 5
+ include_dynamic_obstacles: True   #是否将动态障碍物预测为速度模型 default False
+ dynamic_obstacle_inflation_dist: 0.1 # 动态障碍物的膨胀范围 default:0.6  0.0~15.0
+ inflation_dist: 0.04
+ # Optimization  
+ no_inner_iterations: 5  #被外循环调用后内循环执行优化次数 default:5  1~100
+ no_outer_iterations: 4  #执行的外循环的优化次数 default:4  1~100
+ optimization_activate: True #激活优化 default:True
+ optimization_verbose: False # 打印优化过程详情
+ penalty_epsilon: 0.1 #对于硬约束近似，在惩罚函数中添加安全范围 default:0.1  0.0~1.0
+ obstacle_cost_exponent: 4
+ weight_max_vel_x: 2  #最大x速度权重 default:2.0  0.0~1000.0
+ weight_max_vel_theta: 1 #最大速度权重 default:1.0  0.0~1000.0
+ weight_acc_lim_x: 1  #最大x 加速度权重 default:1.0  0.0~1000.0
+ weight_acc_lim_theta: 1  #最大角速度权重 default:1.0  0.0~1000.0
+ weight_kinematics_nh: 1000 #满足非完整运动学的最优权 default: 1000.0  0~10000.0
+ weight_kinematics_forward_drive: 10   #优化过程中，迫使机器人只选择前进方向，efault:1.0  0~1000.0
+ weight_kinematics_turning_radius: 1  #优化过程中，车型机器人的最小转弯半径的权重。 default:1.0   0.0~1000
+ weight_optimaltime: 1 # must be > 0  #优化过程中，基于轨迹的时间上的权重 default:1.0  0~1000
+ weight_shortest_path: 0 #
+ weight_obstacle: 100
+ weight_inflation: 0.2   #优化过程中， 膨胀区的权重 default:0.1  0.0~10.0
+ weight_dynamic_obstacle: 10 # not in use yet 优化过程中，和动态障碍物最小距离的权重 default:50.0  0.0~1000
+ weight_dynamic_obstacle_inflation: 0.2  #优化过程中，和动态障碍物膨胀区的权重  default 1.0  0.0~1000
+ weight_viapoint: 1  #优化过程中，和全局路径采样点距离的权重  default:1.0  0.0 1000
+ weight_adapt_factor: 2  #default 2.0  1.0~100
+
+ # Homotopy Class Planner 独特拓扑中的并行规划
+ enable_homotopy_class_planning: False 
+ enable_multithreading: True #允许多线程并行处理 default: True
+ max_number_classes: 4 # 允许的线程数 default:5 1~100
+ selection_cost_hysteresis: 1.0 
+ selection_prefer_initial_plan: 0.95
+ selection_obst_cost_scale: 1.0
+ selection_alternative_time_cost: False
+
+ roadmap_graph_no_samples: 15
+ roadmap_graph_area_width: 5
+ roadmap_graph_area_length_scale: 1.0
+ h_signature_prescaler: 0.5
+ h_signature_threshold: 0.1
+ obstacle_heading_threshold: 0.45
+ switching_blocking_period: 0.0
+ viapoints_all_candidates: True
+ delete_detours_backwards: True
+ max_ratio_detours_duration_best_duration: 3.0
+ visualize_hc_graph: False
+ visualize_with_time_as_z_axis_scale: False
+
+ # Recovery
+ 
+ shrink_horizon_backup: True #当规划器检测到系统异常，允许缩小时域规划范围。default True
+ shrink_horizon_min_duration: 10
+ oscillation_recovery: False  #尝试检测和解决振荡 default:True
+ oscillation_v_eps: 0.1
+ oscillation_omega_eps: 0.1
+ oscillation_recovery_min_duration: 10
+ oscillation_filter_duration: 10
+
