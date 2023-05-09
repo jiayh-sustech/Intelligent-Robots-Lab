@@ -202,7 +202,7 @@ cd launch
 touch smartcar_slam_navigation.launch
 ```
 
-- smartcar_navigation.launch
+- smartcar_slam_navigation.launch
 
   ```xml
   <launch>
