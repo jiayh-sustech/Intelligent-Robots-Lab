@@ -274,7 +274,7 @@ touch move_base_safe.launch
 
   ```xml
   <launch>
-      <include file="$(find smartcar_slam)/launch/smartcar_gmapping.launch"/>
+      <include file="$(find gmapping)/launch/slam_gmapping_pr2.launch"/>
       <include file="$(find smartcar_navigation)/launch/move_base_safe.launch"/>
   </launch>
   ```
