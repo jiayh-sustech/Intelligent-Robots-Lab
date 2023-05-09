@@ -207,7 +207,7 @@ touch smartcar_slam_navigation.launch
   ```xml
   <launch>
       <!--Activate SLAM node-->
-      <include file="$(find smartcar_slam)/launch/smartcar_gmapping.launch"/>
+      <include file="$(find gmapping)/launch/slam_gmapping_pr2.launch"/>
       <!--Activate move_base node-->
       <include file="$(find smartcar_navigation)/launch/move_base_teb.launch"/>
       <!--Run rviz-->
