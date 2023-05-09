@@ -256,8 +256,8 @@ sudo apt-get install python3-opencv python3-numpy python3-sklearn ros-noetic-gma
 Step 3. Building
 
 ```
-$cd ~/smartcar_ws/src
-$catkin_make
+cd ~/smartcar_ws
+catkin_make
 ```
 
 Step 4. Write a move_base + slam launch file for rrt
