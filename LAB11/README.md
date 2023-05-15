@@ -355,6 +355,8 @@ Step 6.
 
 save the *single.rviz* file to *~/smartcar_ws/src/rrt_exploration/rviz/single.rviz*
 
+save the *config* folder to *~/smartcar_ws/src/smartcar_navigation/config*
+
 Step 7. Test
 
 - bring up the smartcar
